@@ -19,7 +19,7 @@ export default function OnlinePayment() {
             token: localStorage.getItem("token")
           },
           params: {
-            url: "https://mahmood-mohamed.github.io/freshcart/#"
+            url: "https://mahmood-mohamed.github.io/freshcart/#/"
           }
         }
       );
