@@ -7,44 +7,44 @@ import { useParams } from "react-router-dom";
 
 
 export default function OnlinePayment() {
-  const {cartId} = useParams();
-  
-    async function checkOut() {
-      try {
-        const { data } = await axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`,{
-          shippingAddress: values
-          } ,
-          {
-            headers:{
-              token: localStorage.getItem("token")
-            },
-            params: {
-              url : "https://github.com/mahmood-mohamed/freshcart"
-            }
+  const { cartId } = useParams();
+
+  async function checkOut() {
+    try {
+      const { data } = await axios.post(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}`, {
+        shippingAddress: values
+      },
+        {
+          headers: {
+            token: localStorage.getItem("token")
+          },
+          params: {
+            url: "https://mahmood-mohamed.github.io/freshcart"
           }
-        );
-        console.log(data);
-        location.href = data.session.url ;
-      } catch (error) {
-        console.error("Error checking out:", error);
-        setError("😣 Failed to check out. Please try again.");
-      }
+        }
+      );
+      console.log(data);
+      location.href = data.session.url;
+    } catch (error) {
+      console.error("Error checking out:", error);
+      setError("😣 Failed to check out. Please try again.");
     }
+  }
 
 
-    const initialValues = {
-        details: '',
-        city: '',
-        phone: ''
-    }
+  const initialValues = {
+    details: '',
+    city: '',
+    phone: ''
+  }
 
   const validationSchema = Yup.object({
     details: Yup.string().required('Details is required'),
     city: Yup.string().required('City is required'),
-    phone: Yup.string().required('Phone number is required').matches( /^01[0-2|5]{1}[0-9]{8}$/, 'Phone number must be a valid Egyptian phone number (e.g., 01012345678)')
-  }) 
+    phone: Yup.string().required('Phone number is required').matches(/^01[0-2|5]{1}[0-9]{8}$/, 'Phone number must be a valid Egyptian phone number (e.g., 01012345678)')
+  })
 
-  const {values, handleChange, handleSubmit, errors, touched, handleBlur} = useFormik({
+  const { values, handleChange, handleSubmit, errors, touched, handleBlur } = useFormik({
     initialValues,
     onSubmit: checkOut,
     validationSchema
@@ -68,7 +68,7 @@ export default function OnlinePayment() {
           label="Details:"
           type="text"
           variant="bordered"
-        />  
+        />
 
         {/* المدينة */}
         <Input
@@ -82,7 +82,7 @@ export default function OnlinePayment() {
           label="City:"
           type="text"
           variant="bordered"
-        />  
+        />
 
         {/* الهاتف */}
         <Input
@@ -96,7 +96,7 @@ export default function OnlinePayment() {
           label="Phone"
           type="tel"
           variant="bordered"
-        />  
+        />
 
         {/* زر الدفع أونلاين */}
         <Button
@@ -110,6 +110,6 @@ export default function OnlinePayment() {
       </Form>
     </div>
 
-  
+
   );
 }
