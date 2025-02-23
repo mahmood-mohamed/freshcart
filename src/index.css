@@ -16,3 +16,8 @@
 .active{
     font-weight: bold;
 }
+
+.dropdown-menu * {
+    pointer-events: auto !important;
+  }
+  

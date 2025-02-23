@@ -55,13 +55,18 @@ export default function ProductDetails() {
   return (
     <div className="flex flex-wrap items-center -mx-4">
       <div className="w-full  md:w-1/3 mx-auto px-10 md:px-8 mb-8">
-        <Slider {...settings}>
-          {
-            product?.images?.map((imgSrc, index) => {
-              return <img key={index} src={imgSrc} alt={product?.title} className="w-full h-auto rounded-lg shadow-md mb-4" />
-            })
-          }
-        </Slider>
+        {product?.images?.length > 1 ? (
+          <Slider {...settings}>
+            {
+              product?.images?.map((imgSrc, index) => (
+                <img key={index} src={imgSrc} alt={product?.title} className="w-full h-auto rounded-lg shadow-md mb-4" />
+              ))
+            }
+          </Slider>
+        ) : (
+          <img src={product?.images[0]} alt={product?.title} className="w-full h-auto rounded-lg shadow-md mb-4" />
+        )
+        }
       </div>
 
       <div className="w-full md:w-2/3 px-8 md:px-4">
@@ -99,7 +104,7 @@ export default function ProductDetails() {
             {addToCartLoading ? "Adding..." : "Add to Cart"}
           </Button>
 
-          <WishlistButton productId={product._id}/>
+          <WishlistButton productId={product._id} />
 
         </div>
 

@@ -14,16 +14,23 @@ export default function Footer() {
       {/* Benefits Section */}
       {isLoggedIn && 
         <div className="grid md:grid-cols-3 gap-8 text-center  border-b border-gray-700 pb-8">
-          <div>
-            <h3 className="text-lg mb-1 font-semibold"><i className="fa-solid fa-truck-fast  text-blue-500"></i> Free Delivery</h3>
-            <p className="text-gray-400 text-sm">On all orders above 24.99 EGP</p>
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg mb-1 font-semibold flex items-center gap-2">
+              <i className="fa-solid fa-truck-fast text-blue-500"></i> Free Delivery
+            </h3>
+            <p className="text-gray-400 text-sm">Enjoy free shipping on all orders!</p>
+        
           </div>
-          <div>
-            <h3 className="text-lg mb-1 font-semibold"><i className="fa-brands fa-cc-visa text-blue-500"></i> Secure Payment</h3>
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg mb-1 font-semibold flex items-center gap-2">
+              <i className="fa-brands fa-cc-visa text-blue-500"></i> Secure Payment
+            </h3>
             <p className="text-gray-400 text-sm">100% safe and reliable</p>
           </div>
-          <div>
-            <h3 className="text-lg mb-1 font-semibold"><i className="fa-solid fa-rotate-left text-blue-500"></i> Easy Returns</h3>
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg mb-1 font-semibold flex items-center gap-2">
+              <i className="fa-solid fa-rotate-left text-blue-500"></i> Easy Returns
+            </h3>
             <p className="text-gray-400 text-sm">Hassle-free 30-day returns</p>
           </div>
         </div>

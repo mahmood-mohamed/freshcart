@@ -19,8 +19,6 @@ export default function NavbarComponent() {
   function logOut() {
     setIsLoggedIn(false);
     localStorage.removeItem('token');
-    // localStorage.removeItem('userName');
-    // localStorage.removeItem('userEmail');
     navigate('/login');
   }
 
@@ -53,7 +51,7 @@ export default function NavbarComponent() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Logo/>
+          <Logo />
         </NavbarBrand>
       </NavbarContent>
 
@@ -94,33 +92,40 @@ export default function NavbarComponent() {
 
             </div>
             <Dropdown placement="bottom-end">
-              <DropdownTrigger>
+              <DropdownTrigger className="cursor-pointer">
                 <Avatar
                   isBordered
                   showFallback
                   name={getInitials(userName)}
                   color="default"
-                  className="text-primary-600 text-lg font-bold select-none cursor-pointer"
+                  className="text-primary-600 text-lg font-bold select-none"
                   size="sm"
                 />
               </DropdownTrigger>
-              <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="profile" className="bg-gray-50 py-2 selected-none">
-                  <p className="font-medium text-lg">
-                   Welcome, {firstName} 👋
-                  </p>
+              <DropdownMenu className="dropdown-menu" aria-label="Profile Actions" variant="flat" closeOnSelect={true}>
+                <DropdownItem key="profile" className="bg-gray-50 py-2 selected-none" textValue={`Welcome, ${firstName}`}>
+                  <p className="font-medium text-lg">Welcome, {firstName} 👋</p>
                 </DropdownItem>
 
-                <DropdownItem key="-my-orders"><Link to={`/allorders`} className="block">My Orders</Link></DropdownItem>
-                <DropdownItem key="help_and_feedback"><Link to={`/contact`} className="block">Help & Feedback</Link></DropdownItem>
-                <DropdownItem key="faqs"><Link to={`/faqs`} className="block">FAQs</Link></DropdownItem>
-                <DropdownItem key="logout" color="danger">
-                  <button onClick={logOut} className='bg-transparent w-full' variant="ghost">
-                    Logout
-                  </button>
+                <DropdownItem key="my-orders" textValue="My Orders" onPress={() => navigate('/allorders')}>
+                  My Orders
+                </DropdownItem>
+
+                <DropdownItem key="help_and_feedback" textValue="Help & Feedback" onPress={() => navigate('/contact')}>
+                  Help & Feedback
+                </DropdownItem>
+
+                <DropdownItem key="faqs" textValue="FAQs" onPress={() => navigate('/faqs')}>
+                  FAQs
+                </DropdownItem>
+
+                <DropdownItem key="logout" color="danger" textValue="Logout" onPress={logOut}>
+                  <button className="bg-transparent w-full">Logout</button>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
+
+
           </div>
         )}
 
