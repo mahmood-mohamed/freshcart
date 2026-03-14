@@ -22,55 +22,78 @@ export default function Product({ product }) {
   
 
 
-  return (<div className="relative flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-    <Link className="relative mx-3 mt-3 flex overflow-hidden rounded-xl" to={`/productDetails/${product._id}`}>
-      <img className="object-contain w-full" src={product.imageCover} alt={product.title} />
-      {
-        product.priceAfterDiscount &&
-        <span className="absolute top-0 left-0 m-2 rounded-full bg-red-600 py-1 px-2 text-center text-sm font-medium text-white">{Math.round(100 - product.priceAfterDiscount / product.price * 100)}% OFF</span>
-      }
-    </Link>
-
-    <div className="mt-4 px-5 md:px-3 lg:px-5 pb-5 flex flex-col justify-between grow">
-      <Link to={`/productDetails/${product._id}`}>
-        <h5 title="Name" className="text-lg font-semibold tracking-tight text-slate-900 line-clamp-1">{product.title}</h5>
-      </Link>
-      <div className="mt-1 mb-3">
-        <p>
-          {
-            product.priceAfterDiscount ?
-              <span>
-                <span className="text-medium font-medium text-slate-800 pe-1">{formatCurrency(product.priceAfterDiscount)}</span>
-                <span className="text-sm font-normal text-slate-700 line-through">{formatCurrency(product.price)}</span>
-              </span>
-              :
-              <span className="text-md font-medium text-slate-800">{formatCurrency(product.price)}</span>
-
-          }
-        </p>
-        <div className="flex items-center gap-3">
-
-          <StarRating rating={product.ratingsAverage} />
-
-          <span title="Rating" className="rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">{product.ratingsAverage}</span>
-        </div>
-        <span className="ml-2 text-sm text-gray-600">({product.ratingsQuantity} reviews)</span>
-      </div>
-      <div className="flex justify-between items-center gap-1">
-        <Button isLoading={isLoadingCart} onPress={handleAddToCart} size="sm" className="flex items-center justify-between rounded-md bg-green-500 px-5 md:px-4 lg:px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-3 focus:ring-teal-400">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          {isLoadingCart ? "Adding..." : "Add to Cart"}
-        </Button>
-
+  return (
+    <div className="group relative bg-white rounded-lg border border-gray-100 transition-all duration-300 hover:shadow-lg">
+      {/* Product Image - Full Width */}
+      <Link 
+        className="block overflow-hidden rounded-t-lg aspect-square bg-gray-50" 
+        to={`/productDetails/${product._id}`}
+      >
+        <img 
+          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105" 
+          src={product.imageCover} 
+          alt={product.title} 
+        />
         
-        <WishlistButton productId={product._id}/>
+        {/* Minimal Discount Badge */}
+        {product.priceAfterDiscount && (
+          <span className="absolute top-2 left-2 rounded bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
+            -{Math.round(100 - (product.priceAfterDiscount / product.price) * 100)}%
+          </span>
+        )}
+
+        <div className="absolute top-2 right-2">
+           <WishlistButton productId={product._id} />
+        </div>
+      </Link>
+
+      {/* Product Info Section - Reduced Information */}
+      <div className="p-1">
+        <div className="flex justify-between items-start gap-2">
+          <div className="flex-1 min-w-0">
+            <h3 className="truncate text-sm font-medium text-gray-800" title={product.title}>
+              <Link to={`/productDetails/${product._id}`} className="hover:text-green-600">
+                {product.title}
+              </Link>
+            </h3>
+            
+            <div className="flex items-center gap-1 mt-1">
+              <span className="text-xs font-semibold text-gray-500">{product.ratingsAverage}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Minimal Add to Cart Button */}
+          <Button 
+            isLoading={isLoadingCart} 
+            onPress={handleAddToCart} 
+            size="sm" 
+            isIconOnly
+            className="rounded-lg bg-green-500 text-white shadow-sm hover:bg-green-600 min-w-8 h-8"
+          >
+            {isLoadingCart ? "..." : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+            )}
+          </Button>
+        </div>
+
+        {/* Pricing - Focused and Clean */}
+        <div className="mt-2 flex items-center justify-between">
+          {product.priceAfterDiscount ? (
+            <>
+              <span className="text-sm font-bold">{formatCurrency(product.priceAfterDiscount)}</span>
+              <span className="text-[12px] text-gray-400 line-through">{formatCurrency(product.price)}</span>
+            </>
+          ) : (
+            <span className="text-sm font-bold text-gray-900">{formatCurrency(product.price)}</span>
+          )}
+        </div>
       </div>
-
-
     </div>
-
-  </div>
-  )
+  );
 }
+

@@ -2,8 +2,8 @@ import { Button, Form, Input } from "@heroui/react";
 import {  useState } from "react";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/api/axiosInstance";
 
 export default function ForgetPassword() {
 
@@ -17,7 +17,7 @@ export default function ForgetPassword() {
   function onSubmit(values){
     setErrMsg('');
     setIsLoading(true);
-    axios.post('https://ecommerce.routemisr.com/api/v1/auth/forgotPasswords', values)
+    api.post('auth/forgotPasswords', values)
     .then(({data}) => {
       console.log(data);
       

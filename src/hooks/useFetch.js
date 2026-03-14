@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import api from "../services/api/axiosInstance";
 
 export default function useFetch(endPoint, page=1) {
 
     function fetchData() {
-        return axios.get(`https://ecommerce.routemisr.com/api/v1/${endPoint}?page=${page}`);
+        return api.get(`${endPoint}?page=${page}`);
       }
     
       const { data, error, isLoading, isFetching } = useQuery({

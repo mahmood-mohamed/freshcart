@@ -2,9 +2,9 @@ import { Button, Form, Input } from "@heroui/react";
 import { useContext, useState } from "react";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { authContext } from "../../contexts/authContext";
+import api from "../../services/api/axiosInstance";
 
 export default function Login() {
 
@@ -20,19 +20,14 @@ export default function Login() {
   function onSubmit(values){
     setErrMsg('');
     setIsLoading(true);
-    axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values)
+    api.post("auth/signin", values)
     .then(({data}) => {
-      
       if(data.message == 'success'){  // User isLoggedIn
         setIsLoggedIn(true);
-       
         localStorage.setItem('token',data.token); // Save Token
-      
         navigate('/');
       }
     }).catch((err) => {
-      console.log(err);
-      
       setErrMsg(err.response.data.message)
     }).finally(() => {
       setIsLoading(false)

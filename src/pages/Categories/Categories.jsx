@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import SubCategories from "../../components/SubCategories/SubCategories";
 import AllCategories from "../../components/AllCategories/AllCategories";
 import MainSlider from "../../components/MainSlider/MainSlider";
 import useFetch from "../../hooks/useFetch";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@heroui/react";
+import api from "../../services/api/axiosInstance";
 
 
 export default function Categories() {
@@ -17,7 +17,7 @@ export default function Categories() {
 
   
   function fetchSubCategories(categoryId) {
-    return axios.get(`https://ecommerce.routemisr.com/api/v1/categories/${categoryId}/subcategories`);
+    return api.get(`categories/${categoryId}/subcategories`);
   }
 
   const { data: subCategory, error: subCategoryError, isLoading: subCategoryLoading } = useQuery({

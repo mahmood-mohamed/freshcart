@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react'
-import axios from "axios"
 import { useParams } from 'react-router-dom';
 import LoadingScreen from './../LoadingScreens/LoadingScreen';
 import Slider from "react-slick";
@@ -43,7 +42,7 @@ export default function ProductDetails() {
 
   async function getProductDetails(id) {
     setIsLoading(true);
-    const { data } = await axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`);
+    const { data } = await api.get(`products/${id}`);
     setProduct(data.data);
     setIsLoading(false);
   }

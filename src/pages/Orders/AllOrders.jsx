@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import axios from 'axios';
+import { useContext, useState } from 'react';
 import { FiSearch, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { FaMoneyBillWave, FaCreditCard } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
@@ -7,13 +6,14 @@ import { authContext } from '../../contexts/authContext';
 import LoadingScreen from './../../components/LoadingScreens/LoadingScreen';
 import { Button } from '@heroui/react';
 import { formatCurrency } from '../../helpers/formatCurrencyHelper';
+import api from '../../services/api/axiosInstance';
 
 
 export default function AllOrders ()  {
   const {userId} = useContext(authContext);
 
   function getAllOrders(userId) {
-    return axios.get(`https://ecommerce.routemisr.com/api/v1/orders/user/${userId}`);
+    return api.get(`orders/user/${userId}`);
   }
   const { data: orders = [], error, isLoading } = useQuery({
     queryKey: ['allOrders', userId],

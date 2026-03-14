@@ -2,9 +2,9 @@ import { Button, Form, Input } from "@heroui/react";
 import { useContext, useState } from "react";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { authContext } from "../../contexts/authContext";
+import api from "../../services/api/axiosInstance";
 
 export default function ResetPassword() {
 
@@ -20,7 +20,7 @@ export default function ResetPassword() {
   function onSubmit(values){
     setErrMsg('');
     setIsLoading(true);
-    axios.put("https://ecommerce.routemisr.com/api/v1/auth/resetPassword", values)
+    api.put("auth/resetPassword", values)
     .then(({data}) => {
         console.log(data);
         

@@ -2,8 +2,8 @@ import React from "react";
 import { Form, Input, Button } from "@heroui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/api/axiosInstance";
 
 
 export default function Register() {
@@ -22,7 +22,7 @@ export default function Register() {
   function onSubmit(values){
     setErrMsg('')
     setIsLoading(true);
-    axios.post('https://ecommerce.routemisr.com/api/v1/auth/signup', values)
+    api.post('auth/signup', values)
     .then(({data}) => {
       if(data.message == 'success'){
         navigate('/login', { replace: true }) // { replace: true } ==> for remove from history (not use 'back arrow')

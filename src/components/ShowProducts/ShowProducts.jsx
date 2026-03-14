@@ -1,11 +1,11 @@
-import axios from "axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "@heroui/react";
 import LoadingScreen from "./../LoadingScreens/LoadingScreen";
 import Product from "../Product/Product";
+import api from "../../services/api/axiosInstance";
 
 const fetchProducts = async ({ pageParam = 1 }) => {
-  const { data } = await axios.get("https://ecommerce.routemisr.com/api/v1/products", {
+  const { data } = await api.get("products", {
     params: { page: pageParam, limit: 40 }
   });
   return { data: data.data, nextPage: data.data.length === 40 ? pageParam + 1 : null };
@@ -42,7 +42,7 @@ export default function ShowProducts() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
         {data?.pages.map((page) =>
           page.data.map((product) => <Product key={product.id} product={product} />)
         )}

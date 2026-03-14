@@ -121,11 +121,11 @@ export default function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="text-center text-gray-600 text-sm mt-8 space-y-2">
+      <div className="text-center w-fit mx-auto text-gray-600 text-sm mt-8 space-y-2">
         <p>© 2025 FreshCart. All rights reserved.</p>
-        <p className="text-gray-500 transition hover:underline hover:text-sky-700 font-medium flex items-center justify-center gap-1">
-          Mahmoud Mohamed Mansy 🤞
-          <i className="fa-solid fa-heart text-red-500"></i>
+        <p className="text-gray-500 transition hover:font-semibold hover:text-sky-700 font-medium flex items-center justify-center gap-1">
+          By Mahmoud Mohamed Mansi
+          <i className="fa-solid fa-heart"></i>
         </p>
       </div>
 

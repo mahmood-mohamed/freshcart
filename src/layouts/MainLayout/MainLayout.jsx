@@ -4,12 +4,12 @@ import Navbar from "../../components/Navbar/Navbar";
 
 export default function MainLayout() {
   return (
-    <>
+    <div className="min-h-lvh flex justify-between flex-col">
       <Navbar/>
-        <div className="container">
-          <Outlet/>
-        </div>
+      <div className="container">
+        <Outlet/>
+      </div>
       <Footer/>
-    </>
+    </div>
   )
 }
