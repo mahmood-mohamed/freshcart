@@ -122,7 +122,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="text-center w-fit mx-auto text-gray-600 text-sm mt-8 space-y-2">
-        <p>© 2025 FreshCart. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} FreshCart. All rights reserved.</p>
         <p className="text-gray-500 transition hover:font-semibold hover:text-sky-700 font-medium flex items-center justify-center gap-1">
           By Mahmoud Mohamed Mansi
           <i className="fa-solid fa-heart"></i>
