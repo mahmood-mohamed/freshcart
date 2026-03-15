@@ -37,8 +37,8 @@ export default function Categories() {
   return (
     <div className="pm-5">
       <MainSlider data={data}/>
-      <h2 className="text-2xl font-bold text-center my-6">Product Categories</h2>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <h2 className="text-2xl font-bold text-center my-6 text-gray-800">Product Categories</h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         <AllCategories data={data} isLoading={isLoading} error={error} setSelectedCategory={handleExploreClick} />
       </div>
 

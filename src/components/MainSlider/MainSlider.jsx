@@ -7,7 +7,7 @@ export default function MainSlider({ data , style}) {
     dots: false,
     infinite: true,
     speed: 1500,
-    slidesToShow: 9,
+    slidesToShow: 8,
     slidesToScroll: 4,
     autoplay: true,
     autoplaySpeed: 5000,
@@ -49,7 +49,7 @@ export default function MainSlider({ data , style}) {
     <Slider {...settings}>
       {
         data?.map((item) => (
-          <div key={item._id} className={`flex flex-col items-center justify-center bg-gray-50 shadow-md h-32 overflow-hidden`}>
+          <div key={item._id} className={`flex flex-col items-center justify-center bg-gray-50 shadow-lg h-32 overflow-hidden`}>
             <img src={item.image} alt={item.name} className='w-full h-24' />
             <h2 className='text-sm text-center py-2'>{item.name}</h2>
           </div>

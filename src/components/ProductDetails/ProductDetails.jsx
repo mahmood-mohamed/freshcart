@@ -8,6 +8,7 @@ import { addProductToCart } from '../../services/CartServices/addProductToCart';
 import { formatCurrency } from '../../helpers/formatCurrencyHelper';
 import { CartItemsContext } from '../../contexts/cartContext';
 import WishlistButton from '../WishlistButton/WishlistButton';
+import api from '../../services/api/axiosInstance';
 
 
 export default function ProductDetails() {
@@ -16,12 +17,11 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [addToCartLoading, setAddToCartLoading] = useState(false);
-  const [isWishListed, setIsWishListed] = useState(false);
 
   // To Add Product to Cart
   const { setNumOfCartItems } = useContext(CartItemsContext);
   const handleAddToCart = () => {
-    addProductToCart(product.id, setAddToCartLoading, setNumOfCartItems);
+    addProductToCart(product?._id || product?.id, setAddToCartLoading, setNumOfCartItems);
   };
 
 
@@ -37,14 +37,19 @@ export default function ProductDetails() {
 
   useEffect(() => {
     getProductDetails(productId);
-  }, [])
+  }, [productId])
 
 
   async function getProductDetails(id) {
-    setIsLoading(true);
-    const { data } = await api.get(`products/${id}`);
-    setProduct(data.data);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const { data } = await api.get(`products/${id}`);
+      setProduct(data.data);
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   if (isLoading) {
