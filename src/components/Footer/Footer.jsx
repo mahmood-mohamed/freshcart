@@ -42,9 +42,7 @@ export default function Footer() {
         <div>
           <Logo/>
           <p className="text-gray-700 mt-2">Your go-to store for the best deals.</p>
-          <p className="text-gray-700 text-sm mt-4"><i className="fa-solid fa-location-dot pe-1 fa-lg"></i> Manial Arous, Ashmoun, Menoufia, Egypt</p>
-          <p className="text-gray-700 py-3 text-sm"><i className="fa-solid fa-phone pe-1  fa-lg"></i> 01210428009</p>
-          <p className="text-gray-700 text-sm"><i className="fa-regular fa-envelope pe-1 fa-lg"></i> firstyear265@gmail.com</p>
+          <p className="text-gray-700 text-sm mt-2"><i className="fa-solid fa-location-dot pe-1 fa-lg"></i> Manyal Arus, Ashmoun, Menoufia, Egypt</p>
         </div>
 
         {isLoggedIn && (
@@ -66,8 +64,6 @@ export default function Footer() {
             <ul className="text-gray-700 space-y-2">
               <li><Link to="/faqs" className="hover:text-gray-900 hover:ps-1 transition-all">FAQs</Link></li>
               <li><Link to="/allorders" className="hover:text-gray-900 hover:ps-1 transition-all">Shipping & Returns</Link></li>
-              <li><a href="#" className="hover:text-gray-900 hover:ps-1 transition-all">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-gray-900 hover:ps-1 transition-all">Terms & Conditions</a></li>
             </ul>
           </div>
           </>
@@ -87,7 +83,7 @@ export default function Footer() {
           </a>
 
             <a
-              href="https://wa.me/01210428009"
+              href="https://wa.me/+201210428009"
               target="_blank"
               rel="noopener noreferrer"
               title="WhatsApp"
