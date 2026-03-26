@@ -37,6 +37,7 @@ export default function NavbarComponent() {
 
   const menuItems = [
     "Home",
+    "Products",
     "Categories",
     "Brands",
     "Cart",
@@ -44,10 +45,11 @@ export default function NavbarComponent() {
   ];
 
   return (
+    <div className="">
     <Navbar
-      maxWidth="full"
+      maxWidth="xl"
       classNames={{
-        wrapper: "navbar-container",
+        wrapper: "container mx-auto px-0",
       }}
       shouldHideOnScroll
       isBordered
@@ -179,5 +181,6 @@ export default function NavbarComponent() {
         </NavbarMenu>
       )}
     </Navbar>
+    </div>
   );
 }

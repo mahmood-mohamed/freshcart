@@ -51,7 +51,7 @@ export default function AllOrders ()  {
   );
 
   return (
-    <div className="px-2 sm:px-4 py-8">
+    <div className="container mx-auto px-4 py-12">
       <h1 className="text-2xl font-bold mb-8 text-gray-800">Order History</h1>
 
       <div className="mb-6 flex items-center">

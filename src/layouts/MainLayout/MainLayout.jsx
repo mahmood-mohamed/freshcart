@@ -6,9 +6,7 @@ export default function MainLayout() {
   return (
     <div className="min-h-lvh flex justify-between flex-col">
       <Navbar/>
-      <div className="container mx-auto">
-        <Outlet/>
-      </div>
+      <Outlet/>
       <Footer/>
     </div>
   )

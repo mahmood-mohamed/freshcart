@@ -1,10 +1,9 @@
 import { Accordion, AccordionItem } from '@heroui/react';
-import React from 'react'
 import { Link } from 'react-router-dom';
 
 export default function FAQs() {
   return (
-    <div className='my-5'>
+    <div className='container mx-auto px-4 py-12'>
         <h1 className='text-2xl font-bold mb-4'>Frequently Asked Questions (FAQs) </h1> 
         <h2 className='text-gray-500 text-lg mt-3 mb-4 font-medium'>Find answers to common questions about our products and services. Can't find what you're looking for? Feel free to contact our
          <Link to='/contact' className='text-blue-600 hover:font-semibold hover:text-blue-700' > customer support</Link> team.</h2>

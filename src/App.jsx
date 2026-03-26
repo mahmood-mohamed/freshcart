@@ -28,6 +28,7 @@ import ContactUs from './pages/ContactUs/ContactUs';
 import About from './pages/About/About';
 import { ReactQueryDevtools } from './../node_modules/@tanstack/react-query-devtools/src/index';
 import FAQs from './pages/FAQs/FAQs';
+import Products from './pages/Products/Products';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
       {path: '/verifyResetCode', element: <AuthProtectedRoute> <VerifyResetCode/> </AuthProtectedRoute>},
       {path: '/resetPassword', element: <AuthProtectedRoute> <ResetPassword/> </AuthProtectedRoute>},
       {path: '/productDetails/:productId', element: <ProtectedRoute> <ProductDetails/> </ProtectedRoute>},
+      {path: '/products', element: <ProtectedRoute> <Products/> </ProtectedRoute>},
       {path: '/categories', element: <ProtectedRoute> <Categories/> </ProtectedRoute>},
       {path: '/brands', element: <ProtectedRoute> <Brands/> </ProtectedRoute>},
       {path: '/contact', element: <ProtectedRoute> <ContactUs/> </ProtectedRoute>},

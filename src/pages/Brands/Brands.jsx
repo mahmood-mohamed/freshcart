@@ -35,9 +35,9 @@ export default function Brands() {
       return <div className="text-center text-xl font-semibold text-red-500">Error loading Brands {error.message}</div>;
     }
   return (
-    <div className="p-4 pt-0">
+    <div className="container mx-auto px-4 py-12">
       <MainSlider data={brands}  />
-      <h2 className="text-2xl font-bold text-center my-6">Product Brands</h2>
+      <h2 className="text-2xl font-bold text-center my-6 mt-12">Product Brands</h2>
       <div className="flex flex-wrap justify-center gap-6">
         {brands?.map((brand) => (
           <div

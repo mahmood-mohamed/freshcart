@@ -53,7 +53,7 @@ export default function OnlinePayment() {
 
   return (
 
-    <div className="sm:w-2/3 mx-auto">
+    <div className="sm:w-2/3 mx-auto container mx-auto px-4 py-12">
       <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Enter Your Address</h1>
       <Form onSubmit={handleSubmit} className="grid gap-4 py-6">
 

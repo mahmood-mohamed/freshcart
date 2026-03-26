@@ -57,8 +57,8 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="flex flex-wrap items-center -mx-4">
-      <div className="w-full  md:w-1/3 mx-auto px-10 md:px-8 mb-8">
+    <div className="flex gap-12 items-center container mx-auto">
+      <div className="w-full  md:w-1/3 mx-auto">
         {product?.images?.length > 1 ? (
           <Slider {...settings}>
             {
