@@ -3,129 +3,120 @@ import Logo from "../Logo/Logo";
 import { useContext } from "react";
 import { authContext } from "../../contexts/authContext";
 
-
 export default function Footer() {
-
   const { isLoggedIn } = useContext(authContext);
 
   return (
-    <footer className="bg-zinc-50 text-slate-900 py-2">
-    <div className="container mx-auto px-6">
-      {/* Benefits Section */}
-      {isLoggedIn && 
-        <div className="grid md:grid-cols-3 gap-8 text-center  border-b border-gray-700 pb-8">
-          <div className="flex flex-col items-center">
-            <h3 className="text-lg mb-1 font-semibold flex items-center gap-2">
-              <i className="fa-solid fa-truck-fast text-blue-500"></i> Free Delivery
-            </h3>
-            <p className="text-gray-400 text-sm">Enjoy free shipping on all orders!</p>
-        
+    <footer className="bg-gray-50 border-t border-gray-100 pt-10 pb-2">
+      <div className="container overflow-hidden">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-gray-200 mb-10">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+              <i className="fas fa-truck-fast"></i>
+            </div>
+            <div className="flex flex-col gap-2">
+              <h4 className="font-bold text-gray-800 text-sm">Free Shipping</h4>
+              <p className="text-gray-400 text-xs">On orders over $100</p>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-lg mb-1 font-semibold flex items-center gap-2">
-              <i className="fa-brands fa-cc-visa text-blue-500"></i> Secure Payment
-            </h3>
-            <p className="text-gray-400 text-sm">100% safe and reliable</p>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+              <i className="fas fa-shield-halved"></i>
+            </div>
+            <div className="flex flex-col gap-2">
+              <h4 className="font-bold text-gray-800 text-sm">Secure Payment</h4>
+              <p className="text-gray-400 text-xs">100% safe checkout</p>
+            </div>
           </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-lg mb-1 font-semibold flex items-center gap-2">
-              <i className="fa-solid fa-rotate-left text-blue-500"></i> Easy Returns
-            </h3>
-            <p className="text-gray-400 text-sm">Hassle-free 30-day returns</p>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+              <i className="fas fa-rotate-left"></i>
+            </div>
+            <div className="flex flex-col gap-2">
+              <h4 className="font-bold text-gray-800 text-sm">Easy Returns</h4>
+              <p className="text-gray-400 text-xs">30-day return policy</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+              <i className="fas fa-headset"></i>
+            </div>
+            <div className="flex flex-col gap-2">
+              <h4 className="font-bold text-gray-800 text-sm">Online Support</h4>
+              <p className="text-gray-400 text-xs">Professional 24/7 help</p>
+            </div>
           </div>
         </div>
-      }
 
-      {/* Footer Content */}
-      <div className={` flex justify-between flex-wrap flex-row gap-8 mt-8`}>
-        {/* Logo & Contact Info */}
-        <div>
-          <Logo/>
-          <p className="text-gray-700 mt-2">Your go-to store for the best deals.</p>
-          <p className="text-gray-700 text-sm mt-2"><i className="fa-solid fa-location-dot pe-1 fa-lg"></i> Manyal Arus, Ashmoun, Menoufia, Egypt</p>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
+          <div className="space-y-4">
+            <Logo />
+            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Your one-stop destination for fresh groceries and daily essentials. Quality and trust, delivered to your doorstep.
+            </p>
+          </div>
 
-        {isLoggedIn && (
-          <>
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
-            <ul className="text-gray-700 space-y-2">
-              <li><Link to="/" className="hover:text-gray-900 hover:ps-1 transition-all">Home</Link></li>
-              <li><Link to="/cart" className="hover:text-gray-900 hover:ps-1 transition-all">Cart</Link></li>
-              <li><Link to="/contact" className="hover:text-gray-900 hover:ps-1 transition-all">Contact Us</Link></li>
-              <li><Link to="/about" className="hover:text-gray-900 hover:ps-1 transition-all">About</Link></li>
+            <h3 className="font-bold text-gray-900 mb-2 uppercase text-xs tracking-widest">Shop & Explore</h3>
+            <ul className="space-y-2">
+              <li><Link to="/" className="text-gray-500 hover:text-green-600 text-sm transition-colors">Home</Link></li>
+              <li><Link to="/products" className="text-gray-500 hover:text-green-600 text-sm transition-colors">All Products</Link></li>
+              <li><Link to="/cart" className="text-gray-500 hover:text-green-600 text-sm transition-colors">My Cart</Link></li>
+              <li><Link to="/wishlist" className="text-gray-500 hover:text-green-600 text-sm transition-colors">Wishlist</Link></li>
             </ul>
           </div>
-  
-          {/* Customer Service */}
+
+          {/* Support */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Customer Service</h3>
-            <ul className="text-gray-700 space-y-2">
-              <li><Link to="/faqs" className="hover:text-gray-900 hover:ps-1 transition-all">FAQs</Link></li>
-              <li><Link to="/allorders" className="hover:text-gray-900 hover:ps-1 transition-all">Shipping & Returns</Link></li>
+            <h3 className="font-bold text-gray-900 mb-2 uppercase text-xs tracking-widest">Help Center</h3>
+            <ul className="space-y-2">
+              <li><Link to="/contact" className="text-gray-500 hover:text-green-600 text-sm transition-colors">Contact Us</Link></li>
+              <li><Link to="/about" className="text-gray-500 hover:text-green-600 text-sm transition-colors">About FreshCart</Link></li>
+              <li><Link to="/faqs" className="text-gray-500 hover:text-green-600 text-sm transition-colors">FAQs</Link></li>
+              <li><Link to="/allorders" className="text-gray-500 hover:text-green-600 text-sm transition-colors">Order Tracking</Link></li>
             </ul>
           </div>
-          </>
-        )}
 
-        {/* Social Media */}
-        <div>
-          <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
-          <p className="text-gray-700 text-sm">Stay connected for the latest updates.</p>
-          <div className="flex space-x-4 mt-4">
-          <a
-            href="mailto:firstyear265@gmail.com"
-            title="Email Us"
-            className="text-gray-600 hover:text-gray-950 text-2xl"
-          >
-            <i className="fa-brands fa-google"></i>
-          </a>
+          {/* Social & Payments */}
+          <div className="space-y-4">
+            <div>
+              <h3 className="font-bold text-gray-900 mb-3 uppercase text-xs tracking-widest">Connect With Us</h3>
+              <div className="flex gap-4">
+                <a href="https://wa.me/+201210428009" target="_blank" className="w-10 h-10 border border-gray-100 bg-green-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white hover:border-green-600 transition-all">
+                  <i className="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://github.com/mahmood-mohamed" target="_blank" className="w-10 h-10 border border-gray-100 bg-green-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white hover:border-green-600 transition-all">
+                  <i className="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/mahmoud-mo/" target="_blank" className="w-10 h-10 border border-gray-100 bg-green-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white hover:border-green-600 transition-all">
+                  <i className="fab fa-linkedin-in"></i>
+                </a>
+              </div>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-3">Secure Checkout</p>
+              <div className="flex gap-4 text-3xl text-gray-300">
+                <i className="fab fa-cc-visa hover:text-blue-600 transition-colors"></i>
+                <i className="fab fa-cc-mastercard hover:text-red-500 transition-colors"></i>
+                <i className="fab fa-cc-paypal hover:text-blue-800 transition-colors"></i>
+                <i className="fab fa-cc-apple-pay hover:text-black transition-colors"></i>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <a
-              href="https://wa.me/+201210428009"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="WhatsApp"
-              className="text-gray-600 hover:text-gray-950 text-2xl"
-             >
-              <i className="fa-brands fa-whatsapp"></i>
-            </a>
-
-            <a
-              href="https://github.com/mahmood-mohamed"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="GitHub"
-              className="text-gray-600 hover:text-gray-950 text-2xl"
-            >
-              <i className="fa-brands fa-github"></i>
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/mahmoud-mohamed-b65b42265/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="LinkedIn"
-              className="text-gray-600 hover:text-gray-950 text-2xl"
-            >
-              <i className="fa-brands fa-linkedin-in"></i>
-            </a>
-
+        {/* Copyright */}
+        <div className="pt-4 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-xs">
+          <p>© {new Date().getFullYear()} FreshCart Store. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              Made with <i className="fas fa-heart text-red-400"></i> by 
+              <span className="text-gray-700 font-bold ml-1">Mahmoud Mansi</span>
+            </span>
           </div>
         </div>
       </div>
-
-      {/* Copyright */}
-      <div className="text-center w-fit mx-auto text-gray-600 text-sm mt-8 space-y-2">
-        <p>© {new Date().getFullYear()} FreshCart. All rights reserved.</p>
-        <p className="text-gray-500 transition hover:font-semibold hover:text-sky-700 font-medium flex items-center justify-center gap-1">
-          By Mahmoud Mohamed Mansi
-          <i className="fa-solid fa-heart"></i>
-        </p>
-      </div>
-
-    </div>
-  </footer>
-);
+    </footer>
+  );
 }

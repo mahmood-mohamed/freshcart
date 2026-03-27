@@ -2,10 +2,8 @@ import { Button } from "@heroui/react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { addProductToCart } from "../../services/CartServices/addProductToCart";
-import StarRating from "../StarRating/StarRating";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
 import { CartItemsContext } from "../../contexts/cartContext";
-import { wishlistContext } from "../../contexts/wishlistItemsContext";
 import WishlistButton from "../WishlistButton/WishlistButton";
 
 

@@ -1,31 +1,13 @@
-import { useEffect, useState, useContext, useCallback, useMemo } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Button, RadioGroup, Radio } from "@heroui/react";
-import axios from "axios";
 import CartProduct from "../../components/CartProduct/CartProduct";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
 import LoadingScreen from "../../components/LoadingScreens/LoadingScreen";
 import { CartItemsContext } from "../../contexts/cartContext";
 import shoppingCart from "../../assets/images/shopping-cart.png";
 import emptyCart from "../../assets/images/empty-cart.png";
-
-
-
-// Constants
-const API_BASE_URL = "https://ecommerce.routemisr.com/api/v1";
-
-// Axios instance with default headers
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-});
-
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers["token"] = token;
-  }
-  return config;
-});
+import api from "../../services/api/axiosInstance";
 
 export default function Cart() {
   const [cartData, setCartData] = useState(null);
@@ -35,23 +17,23 @@ export default function Cart() {
   const [error, setError] = useState(null);
   const [requestTimeOut, setRequestTimeOut] = useState();
   const { numOfCartItems, setNumOfCartItems } = useContext(CartItemsContext);
-  const [selectedPayment, setSelectedPayment] = useState("online"); // الحالة الافتراضية هي الدفع أونلاين
-
-
-
+  const [selectedPayment, setSelectedPayment] = useState("online");
 
   // Fetch cart data
   const getUserCart = useCallback(async () => {
     try {
       setIsLoadingScreen(true);
-      const { data } = await apiClient.get("/cart");
-
+      const { data } = await api.get("/cart", {
+        headers: {
+          token: localStorage.getItem("token")
+        }
+      });
       setNumOfCartItems(data.numOfCartItems);
       setCartData(data.data);
       setCartId(data.cartId);
       setError(null);
     } catch (error) {
-      console.error("Error fetching cart data:", error);
+      console.error("Error fetching cart data:", error.response.data.message);
       setError("😣 Oops! Failed to fetch cart data. Please try again later.");
     } finally {
       setIsLoadingScreen(false);
@@ -60,31 +42,21 @@ export default function Cart() {
 
   useEffect(() => {
     getUserCart();
-  }, [getUserCart, cartId]);
+  }, [getUserCart]);
 
   // Update product count
   function updateProductCount(productId, count) {
     clearTimeout(requestTimeOut);
     setRequestTimeOut(
       setTimeout(() => {
-
-        axios.put(`${API_BASE_URL}/cart/${productId}`, {
-          count
-        }, {
-          headers: {
-            token: localStorage.getItem("token")
-          }
-        }).then(({ data }) => {
-          setCartData(data.data);
-          setNumOfCartItems(data.numOfCartItems);
-          setCartId(data.cartId);
-        }).catch((err) => {
-          console.log('Error updating product count :' + err)
-
-        })
+        api.put(`/cart/${productId}`, { count })
+          .then(({ data }) => {
+            setCartData(data.data);
+            setNumOfCartItems(data.numOfCartItems);
+          })
+          .catch((err) => console.log('Error updating product count:', err));
       }, 500)
-    )
-
+    );
   }
 
   // Remove specific cart item
@@ -92,11 +64,9 @@ export default function Cart() {
     async (productId, setIsLoadingRemove) => {
       try {
         setIsLoadingRemove(true);
-        const { data } = await apiClient.delete(`/cart/${productId}`);
-
+        const { data } = await api.delete(`/cart/${productId}`);
         setNumOfCartItems(data.numOfCartItems);
         setCartData(data.data);
-        setCartId(data.cartId);
       } catch (error) {
         console.error("Error removing item:", error);
         setError("😣 Failed to remove item. Please try again.");
@@ -111,8 +81,7 @@ export default function Cart() {
   const removeCartItems = useCallback(async () => {
     try {
       setClearCartLoading(true);
-      await apiClient.delete("/cart");
-
+      await api.delete("/cart");
       setNumOfCartItems(0);
       setCartData(null);
       setCartId(null);
@@ -124,50 +93,48 @@ export default function Cart() {
     }
   }, [setNumOfCartItems]);
 
-
-  if (isLoadingScreen) {
-    return (
-      <div className="text-center mt-2">
-        <p>Loading your cart...</p>
-        <LoadingScreen />
+  if (isLoadingScreen) return <LoadingScreen />;
+  if (error) return (
+    <div className="container py-20 text-center">
+      <div className="max-w-md mx-auto p-8 bg-red-50 rounded-3xl border border-red-100">
+        <p className="text-red-500 font-bold mb-4">{error}</p>
+        <Button onPress={getUserCart} variant="flat" color="danger">Try Again</Button>
       </div>
-    );
-  }
+    </div>
+  );
 
-  if (error) {
-    return (
-      <div className="text-center text-red-500 p-4 bg-red-50 rounded-lg">
-        {error}
-      </div>
-    );
-  }
-
-  if (!cartData || numOfCartItems === 0) {
-    return <EmptyCartMessage />
-  }
+  if (!cartData || numOfCartItems === 0) return <EmptyCartMessage />;
 
   return (
-    <section className="mx-auto max-w-5xl">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">
-            Cart Items ({numOfCartItems})
-          </h1>
-          <img src={shoppingCart} alt="shopping cart" className="w-10 lg:w-12" />
+    <section className="container mx-auto py-12 px-4 max-w-7xl">
+      {/* 🏷️ Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div className="space-y-1">
+          <div className="flex items-center gap-4"> 
+            <img src={shoppingCart} alt="Shopping Cart" className="w-12 h-12" />
+            <h1 className="text-2xl font-black text-gray-800 tracking-tight">Your Cart</h1>
+            <div className="px-4 py-1 bg-green-50 text-green-600 rounded-full text-sm font-black">
+              {numOfCartItems} ITEMS
+            </div>
+          </div>
+          <p className="text-gray-400 text-sm font-medium">Manage your items and proceed to checkout.</p>
         </div>
+        
         <Button
           isLoading={clearCartLoading}
           onPress={removeCartItems}
-          variant="bordered"
+          variant="flat"
           color="danger"
-          aria-label="Clear cart"
+          startContent={<i className="fas fa-trash-alt"></i>}
+          className="font-bold rounded-2xl px-8"
         >
-          Clear Cart
+          Clear All
         </Button>
       </div>
 
-      <div className=" justify-center px-6 md:flex md:space-x-6 xl:px-0">
-        <div className="flex-grow space-y-4 md:w-2/3">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        {/* 📦 Items List */}
+        <div className="lg:col-span-8 space-y-6">
           {cartData.products.map((product) => (
             <CartProduct
               key={product._id}
@@ -178,120 +145,140 @@ export default function Cart() {
           ))}
         </div>
 
-        <OrderSummary
-          subtotal={cartData.totalCartPrice}
-          total={cartData.totalCartPrice}
-          cartId={cartId}
-          selectedPayment={selectedPayment}
-          setSelectedPayment={setSelectedPayment}
-        />
+        {/* 🧾 Order Summary */}
+        <div className="lg:col-span-4">
+          <OrderSummary
+            subtotal={cartData.totalCartPrice}
+            total={cartData.totalCartPrice}
+            cartId={cartId}
+            selectedPayment={selectedPayment}
+            setSelectedPayment={setSelectedPayment}
+          />
+        </div>
       </div>
     </section>
   );
 }
 
-// Extracted components
-
 function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPayment }) {
-
   return (
-    <aside className="sticky top-24 mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-1 md:w-1/3">
-      <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-      <div className="space-y-3">
-        <div className="flex justify-between pb-1 border-b-1 border-b-gray-100">
-          <span className="text-sm font-medium">Subtotal:</span>
-          <span className="text-sm font-normal">{formatCurrency(subtotal)}</span>
+    <aside className="sticky top-24 bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 space-y-8">
+      <h2 className="text-2xl font-black text-gray-800 tracking-tight">Order Summary</h2>
+      
+      <div className="space-y-4">
+        <div className="flex justify-between items-center text-gray-500">
+          <span className="font-medium">Selected Items</span>
+          <span className="font-bold text-gray-800">{formatCurrency(subtotal)}</span>
         </div>
-        <div className="flex justify-between pb-1 border-b-1 border-b-gray-100">
-          <span className="text-sm font-medium">Shipping:</span>
-          <span className="text-sm font-normal">Free</span>
+        <div className="flex justify-between items-center text-gray-500">
+          <span className="font-medium">Shipping Fee</span>
+          <span className="text-green-600 font-bold uppercase text-xs tracking-widest">Free</span>
         </div>
-        <div className="flex justify-between font-bold">
-          <span>Total:</span>
-          <div className="text-right">
-            <p>{formatCurrency(total)}</p>
-          </div>
+        <div className="pt-4 border-t border-gray-50 flex justify-between items-end">
+          <span className="text-gray-400 text-xs font-black uppercase tracking-widest">Total Amount</span>
+          <span className="text-2xl font-semibold text-green-600 tracking-tighter">
+            {formatCurrency(total)}
+          </span>
         </div>
       </div>
 
-      {/* اختيار وسيلة الدفع */}
-      <RadioGroup
-        color="secondary"
-        className="mt-6"
-        value={selectedPayment}
-        onChange={(event) => {
-          setSelectedPayment(event.target.value);
-        }}
-        label="Choose your preferred payment method:"
+      {/* 💳 Payment Methods */}
+      <div className="space-y-4">
+        <p className="text-xs font-black text-gray-400 uppercase tracking-widest px-1">Payment Method</p>
+        <RadioGroup
+          value={selectedPayment}
+          onValueChange={setSelectedPayment}
+          className="gap-3"
+        >
+          <PaymentCard 
+            value="online" 
+            title="Online Payment"
+            desc="Pay securely with card/bank"
+            icon="fa-credit-card"
+            color="blue"
+            isSelected={selectedPayment === "online"}
+          />
+          <PaymentCard 
+            value="cash" 
+            title="Cash on Delivery"
+            desc="Pay when you receive"
+            icon="fa-truck"
+            color="green"
+            isSelected={selectedPayment === "cash"}
+          />
+        </RadioGroup>
+      </div>
+
+      {/* 🚀 Checkout Actions */}
+      <Button 
+        as={Link}
+        to={selectedPayment === "online" ? `/onlinePayment/${cartId}` : `/cashOnPayment/${cartId}`}
+        color={selectedPayment === 'online' ? 'primary' : 'success'}
+        size="lg"
+        className="w-full h-16 rounded-[1.25rem] font-bold text-lg shadow-xl shadow-blue-100"
+        startContent={<i className={`fas ${selectedPayment === 'online' ? 'fa-lock' : 'fa-check-circle'} mr-2`}></i>}
       >
+        Place Order Now
+      </Button>
 
-
-        <div className={`flex items-center gap-3 p-3 border-2 rounded-lg transition 
-          ${selectedPayment === "online" ? "border-blue-500 bg-blue-50 shadow-md" : "border-gray-300 bg-white"}`}
-        >
-          <Radio value="online" className="flex items-center gap-2">
-            <span className="flex items-center gap-2 font-medium text-gray-800">
-              <i className="fa-solid fa-credit-card text-blue-600 text-lg"></i>
-              Online Payment
-            </span>
-          </Radio>
-        </div>
-        <p className="text-gray-500 text-sm mb-1">Pay securely using your credit or debit card.</p>
-    
-        <div className={`flex items-center gap-3 p-3 border-2 rounded-lg transition 
-          ${selectedPayment === "cash" ? "border-green-500 bg-green-50 shadow-md" : "border-gray-300 bg-white"}`}
-        >
-          <Radio value="cash" className="flex items-center gap-2">
-            <span className="flex items-center gap-2 font-medium text-gray-800">
-              <i className="fa-solid fa-truck text-green-600 text-lg"></i>
-              Cash on Delivery
-            </span>
-          </Radio>
-        </div>
-        <p className="text-gray-500 text-sm mb-1">Pay with cash when your order arrives.</p>
-      </RadioGroup>
-
-      {/* Button for online payment */}
-      {selectedPayment === "online" && (
-        <Link
-          to={`/onlinePayment/${cartId}`}
-          className="w-full mt-5 flex items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 py-2 
-          text-center font-medium text-white shadow-lg hover:from-blue-600 hover:to-blue-800 transition-all"
-        >
-          <i className="fa-solid fa-credit-card text-yellow-300 text-lg hover:text-white transition-all"></i>
-          Pay Online
-        </Link>
-      )}
-      
-
-      {/* Button for cash on delivery */}
-      {selectedPayment === "cash" && (
-        <Link
-          to={`/cashOnPayment/${cartId}`}
-          className="w-full mt-5 flex items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-green-500 to-green-700 py-2 
-          text-center font-medium text-white shadow-lg hover:from-green-600 hover:to-green-800 transition-all"
-        >
-          <i className="fa-solid fa-truck text-yellow-300 text-lg hover:text-white transition-all"></i>
-          Pay on Delivery
-        </Link>
-      )}
-
+      <div className="flex items-center justify-center gap-4 text-gray-300 text-2xl pt-2">
+         <i className="fab fa-cc-visa"></i>
+         <i className="fab fa-cc-mastercard"></i>
+         <i className="fab fa-cc-paypal"></i>
+         <i className="fab fa-cc-apple-pay"></i>
+      </div>
     </aside>
   );
 }
 
+function PaymentCard({ value, title, desc, icon, color, isSelected }) {
+  const colorMap = {
+    blue: "border-blue-500 bg-blue-50/50 text-blue-600 shadow-blue-100",
+    green: "border-green-500 bg-green-50/50 text-green-600 shadow-green-100"
+  };
+
+  return (
+    <div className={`relative flex items-center p-4 rounded-2xl border-2 transition-all cursor-pointer ${isSelected ? colorMap[color] + " shadow-lg shadow-opacity-30" : "border-gray-100 bg-white hover:border-gray-200"}`}>
+      <Radio value={value} className="mr-2" />
+      <div className="flex items-center gap-4 ml-2">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${isSelected ? 'bg-white shadow-sm' : 'bg-gray-50 text-gray-400'}`}>
+          <i className={`fas ${icon}`}></i>
+        </div>
+        <div>
+          <p className="font-bold text-gray-800 text-sm">{title}</p>
+          <p className="text-gray-400 text-[10px] font-medium uppercase tracking-wider">{desc}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function EmptyCartMessage() {
   return (
-    <div className="text-center flex flex-col items-center py-20">
-      <p className="text-2xl font-bold mb-4">Your cart is empty</p>
-      <img src={emptyCart} alt="Empty cart" className="w-1/4 mx-auto my-2" />
-      <Link to="/">
-        <Button color="primary" variant="ghost">
-          <i className="fa-solid fa-cart-arrow-down fa-lg"></i>
+    <div className="container py-16 mt-10 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      <div className="max-w-md mx-auto space-y-8">
+        <div className="relative inline-block">
+          <div className="absolute inset-0 bg-green-200 blur-3xl opacity-30 rounded-full"></div>
+          <img src={emptyCart} alt="Empty cart" className="relative w-64 mx-auto animate-bounce duration-[3000ms]" />
+        </div>
+        <div className="space-y-4">
+          <h2 className="text-xl font-black text-gray-800 tracking-tight">Your Cart is Empty</h2>
+          <p className="text-gray-400 text-lg leading-relaxed">
+            Looks like you haven't added anything to your cart yet. Explore our fresh products and find something you love!
+          </p>
+        </div>
+        <Button 
+          as={Link}
+          to="/"
+          size="lg"
+          variant="solid" 
+          color="success"
+          className="px-12 rounded-2xl font-bold shadow-xl shadow-green-100"
+          startContent={<i className="fas fa-shopping-basket"></i>}
+        >
           Start Shopping
         </Button>
-      </Link>
+      </div>
     </div>
   );
 }

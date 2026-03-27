@@ -2,76 +2,113 @@ import { Button } from "@heroui/react";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
 import { useEffect, useState } from "react";
 
-export default function CartProduct({product, removeSpecificCartItem, updateProductCount}) {
-
+export default function CartProduct({ product, removeSpecificCartItem, updateProductCount }) {
   const [isLoadingRemove, setIsLoadingRemove] = useState(false);
   const [productCount, setProductCount] = useState(product.count);
 
-  useEffect(()=> {
+  useEffect(() => {
     setProductCount(product.count);
-  },[product.count])
+  }, [product.count]);
 
-  function increment(){
-    setProductCount(productCount + 1);
-    updateProductCount(product.product._id, productCount + 1);
-  }
+  const handleIncrement = () => {
+    const newCount = productCount + 1;
+    setProductCount(newCount);
+    updateProductCount(product.product._id, newCount);
+  };
 
-  function decrement(){
-    setProductCount(productCount - 1);
-    updateProductCount(product.product._id, productCount - 1);
-  }
+  const handleDecrement = () => {
+    if (productCount > 1) {
+      const newCount = productCount - 1;
+      setProductCount(newCount);
+      updateProductCount(product.product._id, newCount);
+    }
+  };
+
+  const handleBlur = (e) => {
+    const val = parseInt(e.target.value);
+    if (!isNaN(val) && val >= 1) {
+      updateProductCount(product.product._id, val);
+    } else {
+      setProductCount(product.count);
+    }
+  };
 
   return (
-    <div className="justify-between items-center mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-            <img src={product.product.imageCover} alt={product.product.title.split(' ').slice(0,3).join(' ')} className="w-full rounded-lg sm:w-40" />
-            <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between gap-1">
-              <div className="mt-5 sm:mt-0">
-                <h2 className="text-lg font-bold text-gray-900">{product.product.title.split(' ').slice(0,3).join(' ')}</h2>
-                <p className="mt-1 text-xs text-gray-700">{formatCurrency(product.price) }</p>
-              </div>
-              <div className="mt-4 flex justify-between flex-wrap sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-                <div className="flex items-stretch font-medium rounded-sm overflow-hidden border-gray-100">
-                  <Button 
-                    isDisabled={product.count === 1}
-                    onPress={decrement}
-                    className="rounded-none font-semibold min-w-0  bg-gray-100  duration-100 hover:bg-blue-500 hover:text-blue-50"> - </Button>
-                  <input className="w-10 border border-slate-50 bg-white text-center text-xs outline-none" type="number" 
-                    value={productCount} 
-                    onChange={(e) => (setProductCount(e.target.value))} 
-                    onBlur={(e)=> updateProductCount(product.product._id, e.target.value)} 
-                    min={1} />
-                  <Button 
-                    onPress={increment}
-                    className="rounded-none font-semibold min-w-0  bg-gray-100  duration-100 hover:bg-blue-500 hover:text-blue-50"> + </Button>
-                </div>
-                <div className="flex items-center gap-1 space-x-4">
-                  <p className="text-sm font-medium">{ formatCurrency(product.count * product.price) }</p>
-                </div>
+    <div className="group relative bg-white rounded-3xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row gap-6 items-center">
+      {/* 🖼️ Product Image */}
+      <div className="relative w-full sm:w-32 h-32 shrink-0 bg-gray-50 rounded-2xl overflow-hidden border border-gray-100">
+        <img 
+          src={product.product.imageCover} 
+          alt={product.product.title} 
+          className="w-full h-full object-contain p-2 transform group-hover:scale-110 transition-transform duration-500" 
+        />
+      </div>
 
-                <Button
-                  onPress={() => removeSpecificCartItem(product.product._id, setIsLoadingRemove)}
-                  isLoading={isLoadingRemove}
-                  className="p-0 rounded-full bg-transparent hover:bg-red-100 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
-                  aria-label="Remove product"
-                  isIconOnly  
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-red-600 hover:text-red-700"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </Button>
-              </div>
-            </div>
+      {/* 📝 Product Info */}
+      <div className="flex-grow space-y-2 text-center sm:text-left">
+        <h3 className="font-bold text-gray-800 text-lg line-clamp-1 max-w-sm">
+          {product.product.title.split(' ').slice(0, 4).join(' ')}
+        </h3>
+        <span className="inline-block px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-bold">
+          {product.product.category?.name || "Grocery"}
+        </span>
+        <p className="text-gray-400 text-sm font-medium">Unit Price: {formatCurrency(product.price)}</p>
+      </div>
+
+      {/* 🔢 Controls */}
+      <div className="flex flex-col sm:items-end justify-between h-full gap-4 w-full sm:w-auto">
+        <div className="flex items-center justify-center sm:justify-end gap-3">
+          <div className="flex items-center bg-gray-50 border border-gray-100 p-1 rounded-2xl">
+            <Button 
+              isIconOnly
+              size="sm"
+              variant="light"
+              isDisabled={productCount <= 1}
+              onPress={handleDecrement}
+              className="min-w-0 w-8 h-8 rounded-xl text-gray-600 hover:bg-white hover:shadow-sm"
+              aria-label="Decrease quantity"
+            >
+              <i className="fas fa-minus text-xs"></i>
+            </Button>
+            <input 
+              type="text" 
+              className="w-10 bg-transparent text-center font-bold text-gray-800 text-sm outline-none"
+              value={productCount}
+              onChange={(e) => setProductCount(e.target.value)}
+              onBlur={handleBlur}
+            />
+            <Button 
+              isIconOnly
+              size="sm"
+              variant="light"
+              onPress={handleIncrement}
+              className="min-w-0 w-8 h-8 rounded-xl text-gray-600 hover:bg-white hover:shadow-sm"
+              aria-label="Increase quantity"
+            >
+              <i className="fas fa-plus text-xs"></i>
+            </Button>
+          </div>
+          
+          <Button
+            isIconOnly
+            isLoading={isLoadingRemove}
+            onPress={() => removeSpecificCartItem(product.product._id, setIsLoadingRemove)}
+            variant="flat"
+            color="danger"
+            className="w-10 h-10 rounded-2xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+            aria-label="Remove item"
+          >
+            <i className="far fa-trash-alt"></i>
+          </Button>
+        </div>
+
+        <div className="text-right">
+          <p className="text-xs text-gray-400 font-medium uppercase tracking-widest mb-1">Subtotal</p>
+          <p className="text-xl font-semibold text-gray-800 tracking-tight">
+            {formatCurrency(productCount * product.price)}
+          </p>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

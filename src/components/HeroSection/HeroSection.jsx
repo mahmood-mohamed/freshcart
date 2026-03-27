@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   return (
-    <section className="relative h-[500px] md:h-[650px] flex items-center overflow-hidden mx-4 md:mx-0 shadow-2xl">
+    <section className="relative h-[500px] md:h-[650px] flex items-center overflow-hidden px-4 shadow-2xl">
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"

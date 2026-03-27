@@ -9,8 +9,10 @@ export const fetchProducts = async ({ pageParam = 1, queryKey }) => {
     params: buildParams(filters, pageParam),
   });
 
+  const limit = filters.limit || 40;
+
   return {
     data: data.data,
-    nextPage: data.data.length === 40 ? pageParam + 1 : null,
+    nextPage: data.data.length === limit ? pageParam + 1 : null,
   };
 };

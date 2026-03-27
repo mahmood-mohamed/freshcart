@@ -1,21 +1,7 @@
-/**
- * Builds query parameters for API requests based on filters and pagination.
- * @param {Object} filters - The filters to apply to the query.
- * @param {number} pageParam - The page number for pagination.
- * @returns {Object} The query parameters.
- */
-const [filters, setFilters] = useState({
-  keyword: "",
-  minPrice: "",
-  maxPrice: "",
-  category: [],
-  brand: "",
-  sort: "",
-});
 export const buildParams = (filters, pageParam) => {
   const params = {
     page: pageParam,
-    limit: 40,
+    limit: filters.limit || 40,
   };
 
   if (filters.keyword) params.keyword = filters.keyword;

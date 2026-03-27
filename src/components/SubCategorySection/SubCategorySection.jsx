@@ -10,16 +10,16 @@ export default function SubCategorySection() {
   if (error) return null;
 
   return (
-    <section className="py-3 border-b border-gray-100 bg-gray-50 shadow-lg">
+    <section className="py-3 border-b border-gray-100 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center gap-1 mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Our Departments</h2>
+            <h2 className="text-xl font-bold text-gray-900">Our Departments</h2>
             <p className="text-gray-500 mt-2">Explore everything from daily essentials to luxury finds</p>
           </div>
           <button className="text-green-600 font-semibold flex items-center gap-2 hover:underline">
             <Link to="/categories">
-              View All <span className="text-xl">→</span>
+              View All <span className="text-md">→</span>
             </Link>
           </button>
         </div>

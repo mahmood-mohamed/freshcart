@@ -1,98 +1,61 @@
-// import { useInfiniteQuery } from "@tanstack/react-query";
-// import { Button } from "@heroui/react";
-// import LoadingScreen from "./../LoadingScreens/LoadingScreen";
-// import Product from "../Product/Product";
-// import api from "../../services/api/axiosInstance";
-// import { buildParams } from "../../helpers/buildParamsHelper";
-
-
-
-// const fetchProducts = async ({ pageParam = 1, queryKey }) => {
-//   const [, filters] = queryKey;
-//   const { data } = await api.get("products", {
-//     params: buildParams(filters, pageParam)
-//   });
-//   return { 
-//     data: data.data, 
-//     nextPage: data.data.length === 40 ? pageParam + 1 : null 
-//   };
-// };
-
-// export default function ShowProducts() {
-//   const {
-//     data,
-//     fetchNextPage,
-//     hasNextPage,
-//     isFetchingNextPage,
-//     isLoading,
-//     error,
-//   } = useInfiniteQuery({
-//     queryKey: ["products"],
-//     queryFn: fetchProducts,
-//     getNextPageParam: (lastPage) => lastPage.nextPage,
-//   });
-
-//   if (isLoading) {
-//     return (
-//       <div className="text-center py-4">
-//         <p>Products are loading...</p>
-//         <LoadingScreen />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <section className="">
-//       {error && (
-//         <div className="my-4 p-4 bg-red-100 text-red-700 rounded-lg">
-//           Failed to load products. Please try again. 😔😔
-//         </div>
-//       )}
-
-//       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-//         {data?.pages.map((page) =>
-//           page.data.map((product) => <Product key={product.id} product={product} />)
-//         )}
-//       </div>
-
-//       {!error && (
-//         <div className="mt-8 flex justify-center">
-//           {hasNextPage ? (
-//             <Button
-//               onPress={() => fetchNextPage()}
-//               variant="outline"
-//               color="blue"
-//               className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white transition-all px-6 py-2 rounded-lg"
-//               disabled={isFetchingNextPage}
-//             >
-//               {isFetchingNextPage ? "Loading..." : "Load More"}
-//             </Button>
-//           ) : (
-//             <p className="text-gray-500">No more products to show</p>
-//           )}
-//         </div>
-//       )}
-//     </section>
-//   );
-// }
-
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../../services/api/fetchProducts";
 import SearchInput from "../SearchInput/SearchInput";
 import FiltersBar from "../FiltersBar/FiltersBar";
 import Product from "../Product/Product";
-
-export default function ShowProducts() {
+import { Button, Skeleton } from "@heroui/react";
+export default function ShowProducts({ hideFilters = false, limit }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // Initialize state from URL search params
   const [filters, setFilters] = useState({
-    keyword: "",
-    minPrice: "",
-    maxPrice: "",
+    keyword: searchParams.get("keyword") || "",
+    minPrice: searchParams.get("minPrice") || "",
+    maxPrice: searchParams.get("maxPrice") || "",
     category: [],
     brand: "",
-    sort: "",
+    sort: searchParams.get("sort") || "",
+    limit: limit, // Add limit to filters
   });
+
+  // 1. Sync URL -> State (Handles initial load and browser Back/Forward)
+  useEffect(() => {
+    const keyword = searchParams.get("keyword") || "";
+    const minPrice = searchParams.get("minPrice") || "";
+    const maxPrice = searchParams.get("maxPrice") || "";
+    const sort = searchParams.get("sort") || "";
+
+    if (
+      keyword !== filters.keyword ||
+      minPrice !== filters.minPrice ||
+      maxPrice !== filters.maxPrice ||
+      sort !== filters.sort
+    ) {
+      setFilters((prev) => ({
+        ...prev,
+        keyword,
+        minPrice,
+        maxPrice,
+        sort,
+      }));
+    }
+  }, [searchParams]);
+
+  // 2. Sync State -> URL (Updates URL when state changes)
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (filters.keyword) params.set("keyword", filters.keyword);
+    if (filters.minPrice) params.set("minPrice", filters.minPrice);
+    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
+    if (filters.sort) params.set("sort", filters.sort);
+
+    // Only update if params actually changed
+    if (params.toString() !== searchParams.toString()) {
+      setSearchParams(params, { replace: true });
+    }
+  }, [filters, setSearchParams]);
 
   const resetFilters = () => {
     setFilters({
@@ -110,38 +73,112 @@ export default function ShowProducts() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
+    isError
   } = useInfiniteQuery({
     queryKey: ["products", filters],
     queryFn: fetchProducts,
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
+  // Skeleton loading grid
+  const SkeletonGrid = () => (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+      {[...Array(12)].map((_, i) => (
+        <div key={i} className="space-y-3">
+          <Skeleton className="rounded-lg">
+            <div className="h-64 rounded-lg bg-default-300"></div>
+          </Skeleton>
+          <div className="space-y-3">
+            <Skeleton className="w-3/5 rounded-lg">
+              <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+            </Skeleton>
+            <Skeleton className="w-4/5 rounded-lg">
+              <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+            </Skeleton>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <section>
-      {/* 🔍 Search */}
-      <SearchInput
-        onSearch={(value) =>
-          setFilters((prev) => ({ ...prev, keyword: value }))
-        }
-      />
+    <section className="">
+      {/* 🛠 Toolbar Section */}
+      {!hideFilters && (
+        <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md py-4 mb-4">
+          <div className="flex flex-col gap-2">
+            <SearchInput
+              value={filters.keyword}
+              onSearch={(value) =>
+                setFilters((prev) => ({ ...prev, keyword: value }))
+              }
+            />
+            <FiltersBar 
+              filters={filters} 
+              setFilters={setFilters} 
+              resetFilters={resetFilters} 
+            />
+          </div>
+        </div>
+      )}
 
-      {/* 🧩 Filters */}
-      <FiltersBar setFilters={setFilters} resetFilters={resetFilters} />
+      {/* 🛒 Products Display */}
+      {isLoading ? (
+        <SkeletonGrid />
+      ) : isError ? (
+        <div className="text-center py-12 bg-red-50 rounded-3xl border-2 border-dashed border-red-200">
+          <i className="fas fa-exclamation-triangle text-4xl text-red-400 mb-4"></i>
+          <h3 className="text-xl font-bold text-red-700">Oops! Something went wrong</h3>
+          <p className="text-red-500">Failed to load products. Please try again later.</p>
+        </div>
+      ) : data?.pages[0]?.data.length === 0 ? (
+        <div key="empty-state" className="text-center py-12 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+          <i className="fas fa-search text-4xl text-gray-300 mb-4"></i>
+          <h3 className="text-xl font-bold text-gray-700">No products found</h3>
+          <p className="text-gray-500">Try adjusting your search or filters to find what you're looking for.</p>
+          <Button variant="light" color="success" onPress={resetFilters} className="mt-4 font-bold">
+            Clear all filters
+          </Button>
+        </div>
+      ) : (
+        <div key="product-grid" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+          {data?.pages.map((page) =>
+            page.data.map((product) => (
+              <Product key={product.id} product={product} />
+            ))
+          )}
+        </div>
+      )}
 
-      {/* 🛒 Products */}
-      <div className="grid">
-        {data?.pages.map((page) =>
-          page.data.map((product) => (
-            <Product key={product.id} product={product} />
-          ))
-        )}
-      </div>
+      {/* 📄 Pagination Section */}
+      {!isLoading && !isError && hasNextPage && !hideFilters && (
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <Button
+            size="lg"
+            color="success"
+            variant="shadow"
+            className="font-semibold px-10 py-4 text-sm text-white"
+            onPress={() => fetchNextPage()}
+            isLoading={isFetchingNextPage}
+            startContent={<i className="fas fa-arrow-down"></i>}
+          >
+            Show More Products
+          </Button>
+          <p className="text-gray-400 text-sm">
+            Discovering more products for you...
+          </p>
+        </div>
+      )}
 
-      {/* 📄 Load more */}
-      {hasNextPage && (
-        <button onClick={fetchNextPage} disabled={isFetchingNextPage}>
-          {isFetchingNextPage ? "Loading..." : "Load More"}
-        </button>
+      {!isLoading && !hasNextPage && data?.pages[0]?.data.length > 0 && (
+        <div className="mt-10 text-center">
+          <div className="inline-block p-4 bg-gray-50 rounded-2xl border border-gray-100">
+            <p className="text-gray-500 font-medium italic">
+              "That's all for now! We're constantly adding new products."
+            </p>
+          </div>
+        </div>
       )}
     </section>
   );

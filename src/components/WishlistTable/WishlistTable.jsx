@@ -39,7 +39,6 @@ export default function WishlistTable() {
     try {
       setLoading(true);
 
-      // ✅ تأكد أن المنتج موجود في قائمة الرغبات قبل إزالته
       const isProductInWishlist = wishlist.some(item => item._id === productId);
 
       if (!isProductInWishlist) {
@@ -47,23 +46,20 @@ export default function WishlistTable() {
         return;
       }
 
-      // ✅ أضف المنتج إلى عربة التسوق
       await addProductToCart(productId, setLoading, setNumOfCartItems);
-
-      // ✅ بعد الإضافة الناجحة، احذفه من قائمة الرغبات
       await removeItem(productId);
 
       console.log("Product successfully moved to cart!");
     } catch (error) {
       console.error("Error moving product to cart:", error);
     } finally {
-      setLoading(false);  // ✅ إيقاف التحميل بعد الانتهاء
+      setLoading(false); 
     }
   }
 
 
   if (loading) {
-    return <LoadingScreen />;  // إظهار شاشة تحميل أثناء العمليات الطويلة
+    return <LoadingScreen />;  
   }
 
   return (
@@ -75,9 +71,21 @@ export default function WishlistTable() {
         }
       </div>
       {wishlist.length === 0 ? (
-        <div className="flex flex-col items-center mt-7 gap-3">
-          <p className="text-gray-500">Your wishlist is empty.</p>
-          <img src={wishlistImg} className="w-1/4 max-w-16" alt="wishlist cart"/>
+        <div className="container py-16 mt-10 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <div className="relative inline-block">
+            <div className="absolute inset-0 bg-green-200 blur-3xl opacity-30 rounded-full"></div>
+            <img src={wishlistImg} className="w-24 max-w-24" alt="wishlist cart"/>
+          </div>
+          <h2 className="text-xl font-black text-gray-800 tracking-tight">Your Wishlist is Empty</h2>
+          <p className="text-gray-500">Looks like you haven't added anything to your wishlist yet. Explore our fresh products and find something you love!</p>
+          <Button
+            color="primary"
+            variant="flat"
+            className="mt-4"
+            onPress={() => navigate("/products")}
+          >
+            Explore Products
+          </Button>
         </div>
 
       ) : (
