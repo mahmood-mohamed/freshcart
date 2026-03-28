@@ -115,7 +115,7 @@ export default function ShowProducts({ hideFilters = false, limit }) {
     <section className="">
       {/* 🛠 Toolbar Section */}
       {!hideFilters && (
-        <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md mb-5">
+        <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md mb-6">
           <div className="flex flex-col gap-2">
             <FiltersBar 
               filters={filters} 
