@@ -84,7 +84,7 @@ export default function NavbarComponent() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
               {numOfCartItems > 0 && (
-                <Link to="/cart" className="relative" title="Cart">
+                <Link to="/cart" className="relative hidden md:block" title="Cart">
                   <Badge color="danger" content={numOfCartItems} shape="circle">
                     <i className="fas fa-shopping-cart text-2xl  text-gray-800"></i>
                   </Badge>
@@ -93,7 +93,7 @@ export default function NavbarComponent() {
 
               {
                 numOfWishlistItems > 0 && (
-                  <Link to="/wishlist" className="relative" title="Wishlist">
+                  <Link to="/wishlist" className="relative hidden md:block" title="Wishlist">
                     <Badge color="danger" content={numOfWishlistItems} shape="circle">
                       <i className="fas fa-heart text-2xl text-red-600 mr-2"></i>
                     </Badge>
