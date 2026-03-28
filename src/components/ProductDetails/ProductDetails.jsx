@@ -39,20 +39,13 @@ export default function ProductDetails() {
     infinite: false,
     speed: 500,
     arrows: true,
-    slidesToShow: 1,
+    slidesToShow: 2,
     slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
           slidesToScroll: 1,
         }
       },
@@ -95,11 +88,15 @@ export default function ProductDetails() {
         <div className="md:sticky md:top-16 h-max">
           {/* Breadcrumbs */}
           <Breadcrumbs aria-label="breadcrumb" className='mb-4'>
-            <BreadcrumbItem as={Link} to="/">Home</BreadcrumbItem>
-            <BreadcrumbItem as={Link} to="/products">Products</BreadcrumbItem>
-            <BreadcrumbItem>{product?.title}</BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link to="/" className="inline-block hover:opacity-80">Home</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link to="/products" className="inline-block hover:opacity-80">Products</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>{product?.title.slice(0, 28)}...</BreadcrumbItem>
           </Breadcrumbs> 
-          <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 p-6 md:p-10 mb-4">
+          <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 p-6 md:p-12 mb-4">
             {product?.images?.length > 1 ? (
               <Slider {...imagesSettings}>
                 {product?.images?.map((imgSrc, index) => (
@@ -174,10 +171,10 @@ export default function ProductDetails() {
                 <span className="text-xl md:text-2xl font-bold text-green-600 tracking-tight">
                   {formatCurrency(product?.priceAfterDiscount)}
                 </span>
-                <span className="text-lg md:text-xl text-gray-400 font-medium line-through mb-1">
+                <span className="text-md md:text-lg text-gray-400 font-medium line-through">
                   {formatCurrency(product?.price)}
                 </span>
-                <span className="bg-red-100 text-red-700 text-sm font-semibold px-2 py-1 rounded-lg mb-2 shadow-sm">
+                <span className="bg-red-100 text-red-700 text-sm font-semibold px-2 py-1 rounded-lg shadow-sm">
                   Save {Math.round(((product.price - product.priceAfterDiscount) / product.price) * 100)}%
                 </span>
               </div>
@@ -189,7 +186,7 @@ export default function ProductDetails() {
           </div>
 
           {/* Stock & Sold Status */}
-          <div className="flex items-center flex-wrap justify-between gap-4 bg-gray-50 rounded-2xl p-4 border border-gray-100">
+          <div className="flex items-center flex-wrap justify-between sm:justify-around gap-6 bg-gray-50 rounded-2xl p-4 border border-gray-100">
             <div className="flex flex-col">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Availability</span>
               <span className={`text-sm font-bold flex items-center gap-1.5 ${product?.quantity > 0 ? (product?.quantity > 20 ? 'text-green-600' : 'text-orange-500') : 'text-red-500'}`}>
@@ -210,7 +207,7 @@ export default function ProductDetails() {
           </div>
 
           {/* Description (Parsed) */}
-          <div className="mb-10">
+          <div className="mb-8 sm:mb-10 mt-4">
             <h3 className="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Product Details</h3>
             <ul className="space-y-3">
               {product?.description?.split('\n').map((line, idx) => {
@@ -238,7 +235,7 @@ export default function ProductDetails() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-14">
+          <div className="flex flex-row gap-4 mb-14">
             <Button 
               isLoading={addToCartLoading} 
               onPress={handleAddToCart} 
@@ -251,7 +248,7 @@ export default function ProductDetails() {
               {addToCartLoading ? "Adding Item..." : "Add to Cart"}
             </Button>
 
-            <div className="flex-none h-14 w-full sm:w-14 flex items-center justify-center rounded-2xl border-2 border-gray-200 hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer group">
+            <div className="flex-none h-14 w-14 flex items-center justify-center rounded-2xl border-2 border-gray-200 hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer group">
               <WishlistButton productId={product?._id} className="w-full h-full flex items-center justify-center" />
             </div>
           </div>
@@ -260,14 +257,14 @@ export default function ProductDetails() {
           <div id={`reviews-${product?._id}`} className="scroll-mt-28 bg-gray-50/50 p-6 md:p-8 rounded-3xl border border-gray-100">
             <div className="flex flex-col sm:flex-row items-center justify-between flex-wrap gap-2 mb-6">
               <div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight">Customer Reviews</h3>
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">Customer Reviews</h3>
                 <p className="text-sm text-gray-500 mt-1">Real feedback from verified buyers.</p>
               </div>
-              <div className="flex items-center gap-2 w-fit bg-white px-3 md:px-4 py-1 md:py-1.5 rounded-2xl shadow-sm border border-gray-100">
+              <div className="flex items-center gap-2 w-fit bg-white px-2 sm:px-4 py-1 sm:py-1.5 rounded-2xl shadow-sm border border-gray-100">
                 <StarRating rating={product?.ratingsAverage} />
-                <div className="flex items-baseline gap-1 ml-2">
-                  <span className="text-lg md:text-lg font-bold text-gray-900">{product?.ratingsAverage?.toFixed(1) || 0}</span>
-                  <span className="text-sm md:text-base font-medium text-gray-400">/ 5</span>
+                <div className="flex items-baseline gap-1 ms-2">
+                  <span className="text-md font-bold text-gray-900">{product?.ratingsAverage?.toFixed(1) || 0}</span>
+                  <span className="text-sm font-medium text-gray-400">/ 5</span>
                 </div>
               </div>
             </div>
@@ -281,7 +278,7 @@ export default function ProductDetails() {
                 </Slider>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-gray-500 bg-white rounded-2xl shadow-[inset_0_0_15px_rgba(0,0,0,0.03)] border border-gray-100/50 transition-all hover:bg-gray-50/50">
+              <div className="flex flex-col items-center justify-center py-10 text-gray-500 bg-white rounded-2xl shadow-[inset_0_0_15px_rgba(0,0,0,0.03)] border border-gray-100/50 transition-all hover:bg-gray-50/50">
                 <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-5">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 text-gray-400">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
