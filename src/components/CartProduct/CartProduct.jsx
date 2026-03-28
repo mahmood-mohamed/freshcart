@@ -11,14 +11,14 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
   }, [product.count]);
 
   const handleIncrement = () => {
-    const newCount = productCount + 1;
+    const newCount = Number(productCount) + 1;
     setProductCount(newCount);
     updateProductCount(product.product._id, newCount);
   };
 
   const handleDecrement = () => {
     if (productCount > 1) {
-      const newCount = productCount - 1;
+      const newCount = Number(productCount) - 1;
       setProductCount(newCount);
       updateProductCount(product.product._id, newCount);
     }
@@ -70,8 +70,10 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
             >
               <i className="fas fa-minus text-xs"></i>
             </Button>
-            <input 
-              type="text" 
+            <input
+              disabled={isLoadingRemove}
+              type="number"
+              min={1}
               className="w-10 bg-transparent text-center font-bold text-gray-800 text-sm outline-none"
               value={productCount}
               onChange={(e) => setProductCount(e.target.value)}
@@ -91,14 +93,21 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
           
           <Button
             isIconOnly
-            isLoading={isLoadingRemove}
-            onPress={() => removeSpecificCartItem(product.product._id, setIsLoadingRemove)}
+            isDisabled={isLoadingRemove}
+            onPress={() => {
+              setIsLoadingRemove(true);
+              removeSpecificCartItem(product.product._id);
+            }}
             variant="flat"
             color="danger"
             className="w-10 h-10 rounded-2xl bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
             aria-label="Remove item"
           >
-            <i className="far fa-trash-alt"></i>
+            {isLoadingRemove ? (
+              <i className="fas fa-spinner fa-spin"></i>
+            ) : (
+              <i className="far fa-trash-alt"></i>
+            )}
           </Button>
         </div>
 

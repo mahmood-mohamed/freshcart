@@ -49,7 +49,9 @@ export default function Cart() {
     clearTimeout(requestTimeOut);
     setRequestTimeOut(
       setTimeout(() => {
-        api.put(`/cart/${productId}`, { count })
+        api.put(`/cart/${productId}`, { count }, {
+          headers: { token: localStorage.getItem("token") }
+        })
           .then(({ data }) => {
             setCartData(data.data);
             setNumOfCartItems(data.numOfCartItems);
@@ -61,17 +63,16 @@ export default function Cart() {
 
   // Remove specific cart item
   const removeSpecificCartItem = useCallback(
-    async (productId, setIsLoadingRemove) => {
+    async (productId) => {
       try {
-        setIsLoadingRemove(true);
-        const { data } = await api.delete(`/cart/${productId}`);
+        const { data } = await api.delete(`/cart/${productId}`, {
+          headers: { token: localStorage.getItem("token") }
+        });
         setNumOfCartItems(data.numOfCartItems);
         setCartData(data.data);
       } catch (error) {
         console.error("Error removing item:", error);
         setError("😣 Failed to remove item. Please try again.");
-      } finally {
-        setIsLoadingRemove(false);
       }
     },
     [setNumOfCartItems]
@@ -81,7 +82,9 @@ export default function Cart() {
   const removeCartItems = useCallback(async () => {
     try {
       setClearCartLoading(true);
-      await api.delete("/cart");
+      await api.delete("/cart", {
+        headers: { token: localStorage.getItem("token") }
+      });
       setNumOfCartItems(0);
       setCartData(null);
       setCartId(null);
@@ -163,7 +166,7 @@ export default function Cart() {
 function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPayment }) {
   return (
     <aside className="sticky top-24 bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 space-y-8">
-      <h2 className="text-2xl font-black text-gray-800 tracking-tight">Order Summary</h2>
+      <h2 className="text-xl font-bold text-gray-800 tracking-tight">Order Summary</h2>
       
       <div className="space-y-4">
         <div className="flex justify-between items-center text-gray-500">

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../../services/api/fetchProducts";
-import SearchInput from "../SearchInput/SearchInput";
 import FiltersBar from "../FiltersBar/FiltersBar";
 import Product from "../Product/Product";
 import { Button, Skeleton } from "@heroui/react";
@@ -11,60 +10,70 @@ export default function ShowProducts({ hideFilters = false, limit }) {
   
   // Initialize state from URL search params
   const [filters, setFilters] = useState({
-    keyword: searchParams.get("keyword") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    category: [],
-    brand: "",
     sort: searchParams.get("sort") || "",
-    limit: limit, // Add limit to filters
+    limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : limit, // Add limit to filters
   });
 
   // 1. Sync URL -> State (Handles initial load and browser Back/Forward)
   useEffect(() => {
-    const keyword = searchParams.get("keyword") || "";
     const minPrice = searchParams.get("minPrice") || "";
     const maxPrice = searchParams.get("maxPrice") || "";
     const sort = searchParams.get("sort") || "";
+    const urlLimit = searchParams.get("limit") ? Number(searchParams.get("limit")) : limit;
 
-    if (
-      keyword !== filters.keyword ||
-      minPrice !== filters.minPrice ||
-      maxPrice !== filters.maxPrice ||
-      sort !== filters.sort
-    ) {
-      setFilters((prev) => ({
-        ...prev,
-        keyword,
-        minPrice,
-        maxPrice,
-        sort,
-      }));
-    }
-  }, [searchParams]);
+    setFilters((prev) => {
+      if (
+        minPrice !== prev.minPrice ||
+        maxPrice !== prev.maxPrice ||
+        sort !== prev.sort ||
+        urlLimit !== prev.limit
+      ) {
+        return {
+          ...prev,
+          minPrice,
+          maxPrice,
+          sort,
+          limit: urlLimit,
+        };
+      }
+      return prev;
+    });
+  }, [searchParams, limit]);
 
   // 2. Sync State -> URL (Updates URL when state changes)
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (filters.keyword) params.set("keyword", filters.keyword);
-    if (filters.minPrice) params.set("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
-    if (filters.sort) params.set("sort", filters.sort);
+    const params = new URLSearchParams(searchParams);
+
+    const updateParam = (key, value) => {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    };
+
+    updateParam("minPrice", filters.minPrice);
+    updateParam("maxPrice", filters.maxPrice);
+    updateParam("sort", filters.sort);
+    
+    if (filters.limit) params.set("limit", filters.limit);
+    else params.delete("limit");
+
+    // Clean up old complex params if any
+    params.delete("price[gte]");
+    params.delete("price[lte]");
 
     // Only update if params actually changed
     if (params.toString() !== searchParams.toString()) {
       setSearchParams(params, { replace: true });
     }
-  }, [filters, setSearchParams]);
+  }, [filters, searchParams, setSearchParams]);
 
   const resetFilters = () => {
     setFilters({
-      keyword: "",
       minPrice: "",
       maxPrice: "",
-      category: [],
-      brand: "",
       sort: "",
+      limit: limit,
     });
   };
 
@@ -106,14 +115,8 @@ export default function ShowProducts({ hideFilters = false, limit }) {
     <section className="">
       {/* 🛠 Toolbar Section */}
       {!hideFilters && (
-        <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md py-4 mb-4">
+        <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md mb-5">
           <div className="flex flex-col gap-2">
-            <SearchInput
-              value={filters.keyword}
-              onSearch={(value) =>
-                setFilters((prev) => ({ ...prev, keyword: value }))
-              }
-            />
             <FiltersBar 
               filters={filters} 
               setFilters={setFilters} 

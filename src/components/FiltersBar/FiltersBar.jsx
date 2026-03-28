@@ -9,11 +9,11 @@ export default function FiltersBar({ filters, setFilters, resetFilters }) {
 
   const handleSelectionChange = (keys) => {
     const selectedValue = Array.from(keys)[0] || "";
-    setFilters((prev) => ({ ...prev, sort: selectedValue }));
+    setFilters((prev) => prev.sort === selectedValue ? prev : ({ ...prev, sort: selectedValue }));
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4 mb-2 p-4 bg-white rounded-2xl shadow-sm border border-gray-100">
+    <div className="flex flex-wrap items-center justify-center gap-4 mb-2 p-4 bg-white rounded-xl shadow-lg border border-gray-100">
       <div className="flex items-center gap-2">
         <Input
           aria-label="Minimum Price"
@@ -21,9 +21,9 @@ export default function FiltersBar({ filters, setFilters, resetFilters }) {
           min={0}
           placeholder="Min Price"
           labelPlacement="outside"
-          startContent={<span className="text-gray-400 text-sm">$</span>}
+          startContent={<span className="text-gray-400 text-sm">EGP</span>}
           value={filters.minPrice}
-          onValueChange={(val) => setFilters(prev => ({ ...prev, minPrice: val }))}
+          onValueChange={(val) => setFilters(prev => prev.minPrice === val ? prev : ({ ...prev, minPrice: val }))}
           className="w-32"
           variant="flat"
           radius="lg"
@@ -35,9 +35,9 @@ export default function FiltersBar({ filters, setFilters, resetFilters }) {
           min={0}
           placeholder="Max Price"
           labelPlacement="outside"
-          startContent={<span className="text-gray-400 text-sm">$</span>}
+          startContent={<span className="text-gray-400 text-sm">EGP</span>}
           value={filters.maxPrice}
-          onValueChange={(val) => setFilters(prev => ({ ...prev, maxPrice: val }))}
+          onValueChange={(val) => setFilters(prev => prev.maxPrice === val ? prev : ({ ...prev, maxPrice: val }))}
           className="w-32"
           variant="flat"
           radius="lg"

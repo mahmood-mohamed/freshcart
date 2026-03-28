@@ -1,9 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import { Card, Button } from "@heroui/react";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import { wishlistContext } from "../../contexts/wishlistItemsContext";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addProductToCart } from "../../services/CartServices/addProductToCart";
 import { CartItemsContext } from "../../contexts/cartContext";
 import LoadingScreen from "../LoadingScreens/LoadingScreen";
@@ -16,18 +15,17 @@ export default function WishlistTable() {
   const [loading, setLoading] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
 
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsInWishlist(wishlist.some((item) => item._id));
   }, [wishlist]);
 
 
-  // إزالة العنصر من الـ wishlist
   async function removeItem(productId) {
     try {
       setLoading(true);
       await removeWishlistItem(productId);
-      // لا داعي لتحديث الحالة هنا لأن السياق سيتولى ذلك
     } catch (error) {
       console.error("Error removing item:", error);
     } finally {
@@ -67,7 +65,15 @@ export default function WishlistTable() {
       <div>
         {
           (wishlist?.length > 0) &&
-          <h2 className="text-xl font-semibold mb-3">Items ({wishlist?.length})</h2>
+          <div className="flex items-center justify-between mb-8">
+            
+            <div className="flex flex-col gap-1">
+              <h1 className="text-2xl font-bold">My Wishlist <i className="fas fa-heart text-red-500"></i></h1>  
+              <p className="text-gray-500">Manage your favorite products and save them for later.</p>
+            </div>
+            
+            <p className="text-md font-semibold">Items ({wishlist?.length})</p>
+          </div>
         }
       </div>
       {wishlist.length === 0 ? (
@@ -76,13 +82,13 @@ export default function WishlistTable() {
             <div className="absolute inset-0 bg-green-200 blur-3xl opacity-30 rounded-full"></div>
             <img src={wishlistImg} className="w-24 max-w-24" alt="wishlist cart"/>
           </div>
-          <h2 className="text-xl font-black text-gray-800 tracking-tight">Your Wishlist is Empty</h2>
+          <h2 className="text-xl font-bold mt-4 mb-2 text-gray-800 tracking-tight">Your Wishlist is Empty</h2>
           <p className="text-gray-500">Looks like you haven't added anything to your wishlist yet. Explore our fresh products and find something you love!</p>
           <Button
             color="primary"
             variant="flat"
             className="mt-4"
-            onPress={() => navigate("/products")}
+            onPress={() => navigate('/products')}
           >
             Explore Products
           </Button>
