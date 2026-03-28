@@ -16,22 +16,23 @@ export default function ReviewsSection({ review }) {
 
       <div className='mb-2 relative z-10'>
         <div className='flex items-center justify-between mb-4'>
-          <div className='flex items-center gap-4'>
+          <div className='flex items-center flex-wrap gap-4'>
             <div className='w-12 h-12 rounded-full bg-gradient-to-tr from-green-600 to-green-400 flex items-center justify-center text-white shadow-md'>
               <span className='font-bold text-lg tracking-wider'>{initials}</span>
             </div>
             <div className='flex flex-col'>
               <h4 className='font-bold text-gray-800 capitalize leading-tight'>{name}</h4>
-              <p className='text-xs text-gray-500 mt-0.5'>{date}</p>
+              <p className='text-xs text-gray-500 mt-0.5 leading-tight italic'>{date}</p>
             </div>
           </div>
         </div>
 
-        <div className='mb-3 flex items-center gap-2'>
+        <div className='mb-2 flex items-center gap-2'>
            <StarRating rating={review.rating} />
+           <span className='text-sm font-bold text-yellow-800 ms-1'>({review.rating.toFixed(1)})</span>
         </div>
 
-        <p className='text-gray-700 leading-relaxed italic'>
+        <p className='text-gray-700 leading-relaxed '>
           "{review.review}"
         </p>
       </div>

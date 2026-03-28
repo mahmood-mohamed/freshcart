@@ -24,6 +24,10 @@ export default function ProductDetails() {
     addProductToCart(product?._id || product?.id, setAddToCartLoading, setNumOfCartItems);
   };
 
+  const scrollToReviews = () => {
+    document.getElementById(`reviews-${product?._id}`)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   // Slider Settings
   const imagesSettings = {
     dots: true,
@@ -54,6 +58,8 @@ export default function ProductDetails() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          arrows: true,
+          dots: false,
         }
       }
     ]
@@ -158,9 +164,12 @@ export default function ProductDetails() {
               <span className="text-sm font-bold text-yellow-800 ml-1">{product?.ratingsAverage?.toFixed(1) || 0}</span>
             </div>
             {product?.ratingsQuantity > 0 && (
-              <a href="#reviews" className="text-sm font-medium text-gray-500 hover:text-green-600 transition-colors underline underline-offset-4 decoration-gray-300 hover:decoration-green-500">
+              <button 
+                onClick={scrollToReviews}
+                className="text-sm font-medium text-gray-500 hover:text-green-600 transition-colors underline underline-offset-4 decoration-gray-300 hover:decoration-green-500"
+              >
                 Read {product.ratingsQuantity} reviews
-              </a>
+              </button>
             )}
           </div>
 
