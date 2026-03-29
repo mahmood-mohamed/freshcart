@@ -16,9 +16,9 @@ export default function NavbarComponent() {
 
   // Cut first name
   let firstName = "";
-  if (userName.includes(" ") && userName.length > 0) {
+  if (userName && userName.includes(" ") && userName.length > 0) {
     firstName = userName.split(" ")[0]; 
-  } else if (userName.length > 0) {
+  } else if (userName && userName.length > 0) {
     firstName = userName;
   } else {
     firstName = "User";
