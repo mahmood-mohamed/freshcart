@@ -12,8 +12,18 @@ export default function NavbarComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoggedIn, setIsLoggedIn, userName } = useContext(authContext);
   const { numOfCartItems } = useContext(CartItemsContext);
-  const { numOfWishlistItems } = useContext(wishlistContext)
-  const firstName = userName.split(" ")[0]; // Cut first name
+  const { numOfWishlistItems } = useContext(wishlistContext);
+
+  // Cut first name
+  let firstName = "";
+  if (userName.includes(" ") && userName.length > 0) {
+    firstName = userName.split(" ")[0]; 
+  } else if (userName.length > 0) {
+    firstName = userName;
+  } else {
+    firstName = "User";
+  }
+  
 
 
   function logOut() {
@@ -26,12 +36,16 @@ export default function NavbarComponent() {
   function getInitials(name) {
     if (!name) return "U"; 
 
-    const words = name.trim().split(" "); 
-    if (words.length === 1) {
-      return words[0].charAt(0).toUpperCase(); 
+    // Handle Arabic names
+    if (name.includes(" ")) {
+      const words = name.trim().split(" "); 
+      if (words.length === 1) {
+        return words[0].charAt(0).toUpperCase(); 
+      }
+      return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase(); 
     }
 
-    return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase(); 
+    return name.charAt(0).toUpperCase(); 
   }
 
 
