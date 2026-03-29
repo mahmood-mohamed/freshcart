@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-50 border-t border-gray-100 pt-10 pb-2">
       <div className="container overflow-hidden">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-gray-200 mb-10">
+        <div className="flex flex-wrap justify-between mx-auto gap-8 pb-10 border-b border-gray-100 mb-5">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl shrink-0">
               <i className="fas fa-truck-fast"></i>
@@ -48,7 +48,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
+        <div className="flex flex-wrap justify-between mx-auto gap-8 pb-10 border-b border-gray-100 mb-5">
           <div className="space-y-4">
             <Logo />
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          {isLoggedIn && (<div>
             <h3 className="font-bold text-gray-900 mb-2 uppercase text-xs tracking-widest">Shop & Explore</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-500 hover:text-green-600 text-sm transition-colors">Home</Link></li>
@@ -65,7 +65,7 @@ export default function Footer() {
               <li><Link to="/cart" className="text-gray-500 hover:text-green-600 text-sm transition-colors">My Cart</Link></li>
               <li><Link to="/wishlist" className="text-gray-500 hover:text-green-600 text-sm transition-colors">Wishlist</Link></li>
             </ul>
-          </div>
+          </div>)}
 
           {/* Support */}
           <div>
@@ -107,7 +107,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="pt-4 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-xs">
+        <div className="pt-5 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-xs">
           <p>© {new Date().getFullYear()} FreshCart Store. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
