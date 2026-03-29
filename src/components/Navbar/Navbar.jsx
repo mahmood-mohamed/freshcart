@@ -24,14 +24,14 @@ export default function NavbarComponent() {
 
   // Function to extract initials from a name
   function getInitials(name) {
-    if (!name) return "U"; // إذا لم يكن هناك اسم، عرض "U" كافتراضي
+    if (!name) return "U"; 
 
-    const words = name.trim().split(" "); // تقسيم الاسم إلى كلمات
+    const words = name.trim().split(" "); 
     if (words.length === 1) {
-      return words[0].charAt(0).toUpperCase(); // إذا كان الاسم كلمة واحدة، عرض أول حرف فقط
+      return words[0].charAt(0).toUpperCase(); 
     }
 
-    return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase(); // استخراج أول حرفين من الاسم الأول والثاني
+    return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase(); 
   }
 
 
@@ -109,29 +109,35 @@ export default function NavbarComponent() {
                   showFallback
                   name={getInitials(userName)}
                   color="default"
-                  className="text-primary-600 text-lg font-bold select-none"
+                  className="text-green-500 text-lg font-bold select-none"
                   size="sm"
                 />
               </DropdownTrigger>
               <DropdownMenu className="dropdown-menu" aria-label="Profile Actions" variant="flat" closeOnSelect={true}>
-                <DropdownItem key="profile" className="bg-gray-50 py-2 selected-none" textValue={`Welcome, ${firstName}`}>
-                  <p className="font-medium text-lg">Welcome, {firstName} 👋</p>
+                <DropdownItem key="profile" className="bg-gray-50 py-2 selected-none cursor-default" textValue={`Welcome, ${firstName}`}>
+                  <p className="font-medium text-base">Welcome, {firstName} 👋</p>
                 </DropdownItem>
 
                 <DropdownItem key="my-orders" textValue="My Orders" onPress={() => navigate('/allorders')}>
                   My Orders
+                  <i className="fa-solid fa-cart-arrow-down ms-2 hover:text-green-500 transition-colors duration-300"></i>
                 </DropdownItem>
 
                 <DropdownItem key="help_and_feedback" textValue="Help & Feedback" onPress={() => navigate('/contact')}>
                   Help & Feedback
+                  <i className="fa-solid fa-comment-dots ms-2 hover:text-green-500 transition-colors duration-300"></i>
                 </DropdownItem>
 
                 <DropdownItem key="faqs" textValue="FAQs" onPress={() => navigate('/faqs')}>
                   FAQs
+                  <i className="fa-solid fa-question-circle ms-2 hover:text-green-500 transition-colors duration-300"></i>
                 </DropdownItem>
 
                 <DropdownItem key="logout" color="danger" textValue="Logout" onPress={logOut}>
-                  <button className="bg-transparent w-full">Logout</button>
+                  <button className="bg-transparent w-full text-red-600 hover:text-red-700">
+                    Logout
+                    <i className="fa-solid fa-arrow-right-from-bracket ms-2"></i>
+                  </button>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
