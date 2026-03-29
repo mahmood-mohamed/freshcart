@@ -10,18 +10,18 @@ export default function Home() {
     <>
       <HeroSection />
       
-      <div className="container mt-1">
-        <div className="mb-2 mt-4 text-center">
-          <h2 className="text-3xl font-bold text-gray-800">
+      <div className="container mt-2">
+        <div className="mt-5 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
             Our Trusted <span className="text-green-600">Brands</span>
           </h2>
           <div className="w-20 h-1 bg-green-500 mx-auto mt-2 rounded-full"></div>
         </div>
         <BrandSlider />
       </div>
-      <div className="mt-10">
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-800">
+      <div className="py-10 mt-5 border-b border-gray-100 bg-gray-50">
+        <div className="my-2 md:my-5 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
             Shop by <span className="text-green-600">Category</span>
           </h2>
           <div className="w-20 h-1 bg-green-500 mx-auto mt-2 rounded-full"></div>
@@ -31,8 +31,8 @@ export default function Home() {
 
 
       <section className="container py-20">
-        <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold mb-3 text-gray-800">
+        <div className="my-5 md:my-12 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-800">
               Featured <span className="text-green-600">Products</span>
             </h2>
             <div className="w-20 h-1 bg-green-500 mx-auto mb-4 rounded-full"></div>
@@ -58,10 +58,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-green-50 py-20 mt-10 border-t border-green-100">
+      <section className="bg-green-50 py-10 md:py-15 mt-10 border-t border-green-100">
         <div className="container">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Why Shop With <span className="text-green-600">FreshCart?</span></h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Why Shop With <span className="text-green-600">FreshCart?</span></h2>
             <div className="w-20 h-1 bg-green-500 mx-auto rounded-full"></div>
           </div>
           
