@@ -18,11 +18,10 @@ export default function ForgetPassword() {
     setErrMsg('');
     setIsLoading(true);
     api.post('auth/forgotPasswords', values)
-    .then(({data}) => {
-      console.log(data);
-      
+    .then(({data}) => {      
       if(data.statusMsg == 'success'){  
         navigate('/verifyResetCode');
+        localStorage.setItem('email',values.email);
       }
     }).catch((err) => {
       setErrMsg(err.response.data.message)
@@ -42,16 +41,20 @@ export default function ForgetPassword() {
   });
 
   return (
-    <div className="sm:w-2/3 mx-auto mt-8 text-center">
-      <h1 className="text-2xl font-semibold">Forget Password</h1>
-      <Form onSubmit={handleSubmit} className="grid gap-2 py-6">
+    <div className="sm:w-1/2 mx-auto w-full max-w-lg px-5 py-10 my-10 pb-10">
+      <h1 className="text-2xl font-semibold mb-2 text-center">Forget Password</h1>
+      <p className="text-sm mb-4 text-center">Enter your email address and we'll send you a code to reset your password.</p>
+      <Form onSubmit={handleSubmit} className="grid gap-3 py-6">
         <Input isInvalid={touched.email && errors.email} errorMessage={errors.email} name="email" value={values.email} onChange={handleChange} onBlur={handleBlur} className="caret-primary-500 mb-3" label="Email" type="email" variant={"bordered"}/>  
         
         <Button type="submit" isLoading={isLoading} color="primary">
           Send
         </Button>
         { errMsg && <p className="text-danger-500 text-sm">{errMsg}</p> }
-        <p className="text-sm"> <Link className="text-primary-500 hover:underline" to={'/login'}>Back to Login</Link></p>
+        <p className="text-sm">
+          Don't have an account? 
+          <Link className="text-primary-500 hover:underline" to={'/register'}> Register</Link>
+        </p>
       </Form>
     </div>
   )
