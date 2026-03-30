@@ -55,7 +55,7 @@ export default function Register() {
 
   return (
 
-    <div className="sm:w-1/2 mx-auto my-10">
+    <div className="sm:w-1/2 w-full max-w-md px-4 mx-auto my-10">
       <h1 className="text-2xl font-semibold mb-6 text-center">Register Now</h1>
       <Form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2 py-6">
         <Input isInvalid={touched.name && errors.name} errorMessage={errors.name} name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} className="md:col-span-2 caret-primary-500" label="Name" type="text" variant={"bordered"}/>  
