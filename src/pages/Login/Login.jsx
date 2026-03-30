@@ -47,7 +47,7 @@ export default function Login() {
   });
 
   return (
-    <div className="sm:w-1/2 mx-auto my-10">
+    <div className="sm:w-1/2 w-full max-w-md px-4 mx-auto my-10">
       <h1 className="text-2xl font-semibold mb-6 text-center">Login Now</h1>
       <Form onSubmit={handleSubmit} className="grid gap-4 py-6">
         <Input isInvalid={touched.email && errors.email} errorMessage={errors.email} name="email" value={values.email} onChange={handleChange} onBlur={handleBlur} className="caret-primary-500" label="Email" type="email" variant={"bordered"}/>  
