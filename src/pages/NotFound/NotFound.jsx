@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom';
 import './notFound.css';
+import { Button } from '@heroui/react';
 
 
 export default function NotFound() {
   return (
-    <div className="main_wrapper gap-3  lg:gap-1">
+    <div className="main_wrapper gap-3 lg:gap-1">
       <div className="main">
         <div className="antenna">
           <div className="antenna_shadow"></div>
@@ -72,19 +74,13 @@ export default function NotFound() {
         <div className="text_4043">4</div>
       </div>
       <p className='md:text-2xl pt-2 text-center text-gray-500'>404 Page not found...</p>
-    </div>
-
-  )
+      <Button
+        as={Link} 
+        className="mt-6 px-4 py-2 bg-green-500 text-center text-white font-medium rounded-lg shadow hover:bg-green-600 focus:ring-4 focus:ring-green-300 transition"
+        to="/" 
+      >
+        Back to Home 
+      </Button>
+    </div>  
+  );
 }
-
-// <div classNameName="flex flex-col gap-6 items-center justify-center text-center" >
-//   <h1 classNameName="text-6xl font-bold text-gray-800">404</h1>
-//   <p classNameName="mt-4 text-xl text-gray-600">Oops! The page you're looking for doesn't exist.</p>
-//   <div classNameName="mt-6">
-//     <Link 
-//       to="/" 
-//       classNameName="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition">
-//       Back to Home
-//     </Link>
-//   </div>
-// </div>
