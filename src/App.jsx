@@ -1,5 +1,5 @@
-import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout/MainLayout';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
@@ -32,11 +32,7 @@ import Products from './pages/Products/Products';
 
 
 function App() {
-
-  
-  // Create a client Instance
   const queryClient = new QueryClient;
-
 
   const router = createHashRouter([
     {path: '', element: <MainLayout/>, children:[
@@ -50,9 +46,9 @@ function App() {
       {path: '/products', element: <ProtectedRoute> <Products/> </ProtectedRoute>},
       {path: '/categories', element: <ProtectedRoute> <Categories/> </ProtectedRoute>},
       {path: '/brands', element: <ProtectedRoute> <Brands/> </ProtectedRoute>},
-      {path: '/contact', element: <ProtectedRoute> <ContactUs/> </ProtectedRoute>},
-      {path: '/about', element: <ProtectedRoute> <About/> </ProtectedRoute>},
-      {path: '/faqs', element: <ProtectedRoute> <FAQs/> </ProtectedRoute>},
+      {path: '/contact', element: <ContactUs/>}, 
+      {path: '/about', element: <About/>}, 
+      {path: '/faqs', element: <FAQs/>},  
       {path: '/wishlist', element: <ProtectedRoute> <Wishlist/> </ProtectedRoute>},
       {path: '/cart', element: <ProtectedRoute> <Cart/> </ProtectedRoute>},
       {path: '/onlinePayment/:cartId', element: <ProtectedRoute> <OnlinePayment/> </ProtectedRoute>},
@@ -62,7 +58,6 @@ function App() {
       {path: '*', element: <NotFound/>},
     ]}
   ]);
-
 
   return (
     <QueryClientProvider client={queryClient}>
