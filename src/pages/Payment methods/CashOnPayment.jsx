@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Form, Input, Button } from "@heroui/react";
+import { Form, Input, Button, BreadcrumbItem, Breadcrumbs } from "@heroui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import OrderDetails from "../../components/OderDetails/OrderDetailsComponent";
 
 export default function CashOnPayment() {
@@ -63,7 +63,28 @@ export default function CashOnPayment() {
 
   return (
     <div className="sm:w-2/3 mx-auto container mx-auto px-4 py-12">
-      <h1 className="text-2xl font-bold mb-6 text-center">Enter Your Address</h1>
+      {/* breadcrumb */}
+      <Breadcrumbs
+        separator="/"
+        className="mb-6"
+      >
+        <BreadcrumbItem>
+          <Link to="/" className="inline-block hover:opacity-80">Home</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link to="/cart" className="inline-block hover:opacity-80">Cart</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <Link to="/checkout" className="inline-block hover:opacity-80">Checkout</Link>
+        </BreadcrumbItem>
+      </Breadcrumbs>
+
+
+
+      <div className="flex items-center justify-center gap-2 mb-6">
+        <i className="fa-solid fa-truck text-2xl text-green-600"></i>
+        <h1 className="text-2xl font-bold text-center">Enter Your Address</h1>
+      </div>
 
       <Form onSubmit={handleSubmit} className="grid gap-4 py-6">
         <Input
