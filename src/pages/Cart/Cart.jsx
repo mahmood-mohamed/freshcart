@@ -115,8 +115,8 @@ export default function Cart() {
         <div className="space-y-1">
           <div className="flex items-center gap-4"> 
             <img src={shoppingCart} alt="Shopping Cart" className="w-12 h-12" />
-            <h1 className="text-2xl font-black text-gray-800 tracking-tight">Your Cart</h1>
-            <div className="px-4 py-1 bg-green-50 text-green-600 rounded-full text-sm font-black">
+            <h1 className="text-2xl font-bold text-gray-800 tracking-tight">Your Cart</h1>
+            <div className="px-4 py-1 bg-green-100 text-green-600 rounded-full text-sm font-bold">
               {numOfCartItems} ITEMS
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function Cart() {
           variant="flat"
           color="danger"
           startContent={<i className="fas fa-trash-alt"></i>}
-          className="font-bold rounded-2xl px-8"
+          className="font-bold rounded-2xl px-4"
         >
           Clear All
         </Button>
@@ -171,15 +171,15 @@ function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPay
       <div className="space-y-4">
         <div className="flex justify-between items-center text-gray-500">
           <span className="font-medium">Selected Items</span>
-          <span className="font-bold text-gray-800">{formatCurrency(subtotal)}</span>
+          <span className="font-medium text-gray-800">{formatCurrency(subtotal)}</span>
         </div>
         <div className="flex justify-between items-center text-gray-500">
           <span className="font-medium">Shipping Fee</span>
           <span className="text-green-600 font-bold uppercase text-xs tracking-widest">Free</span>
         </div>
-        <div className="pt-4 border-t border-gray-50 flex justify-between items-end">
+        <div className="pt-4 border-t border-gray-50 flex justify-between items-center">
           <span className="text-gray-400 text-xs font-black uppercase tracking-widest">Total Amount</span>
-          <span className="text-2xl font-semibold text-green-600 tracking-tighter">
+          <span className="text-xl font-semibold text-green-600 tracking-tighter">
             {formatCurrency(total)}
           </span>
         </div>
@@ -191,7 +191,7 @@ function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPay
         <RadioGroup
           value={selectedPayment}
           onValueChange={setSelectedPayment}
-          className="gap-3"
+          className="gap-2"
         >
           <PaymentCard 
             value="online" 
@@ -218,13 +218,13 @@ function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPay
         to={selectedPayment === "online" ? `/onlinePayment/${cartId}` : `/cashOnPayment/${cartId}`}
         color={selectedPayment === 'online' ? 'primary' : 'success'}
         size="lg"
-        className="w-full h-16 rounded-[1.25rem] font-bold text-lg shadow-xl shadow-blue-100"
+        className="w-full h-14 rounded-[1.25rem] font-bold text-md shadow-xl shadow-blue-100"
         startContent={<i className={`fas ${selectedPayment === 'online' ? 'fa-lock' : 'fa-check-circle'} mr-2`}></i>}
       >
         Place Order Now
       </Button>
 
-      <div className="flex items-center justify-center gap-4 text-gray-300 text-2xl pt-2">
+      <div className="flex items-center justify-center gap-4 text-gray-300 text-xl pt-2">
          <i className="fab fa-cc-visa"></i>
          <i className="fab fa-cc-mastercard"></i>
          <i className="fab fa-cc-paypal"></i>
@@ -241,17 +241,18 @@ function PaymentCard({ value, title, desc, icon, color, isSelected }) {
   };
 
   return (
-    <div className={`relative flex items-center p-4 rounded-2xl border-2 transition-all cursor-pointer ${isSelected ? colorMap[color] + " shadow-lg shadow-opacity-30" : "border-gray-100 bg-white hover:border-gray-200"}`}>
-      <Radio value={value} className="mr-2" />
-      <div className="flex items-center gap-4 ml-2">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${isSelected ? 'bg-white shadow-sm' : 'bg-gray-50 text-gray-400'}`}>
-          <i className={`fas ${icon}`}></i>
+    <div className={`relative flex items-center p-2 rounded-2xl border-2 transition-all cursor-pointer ${isSelected ? colorMap[color] + " shadow-lg shadow-opacity-30" : "border-gray-100 bg-white hover:border-gray-200"}`}>
+      <Radio value={value} className="mr-2">
+        <div className="flex items-center gap-2 ml-2">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${isSelected ? 'bg-white shadow-sm' : 'bg-gray-50 text-gray-400'}`}>
+            <i className={`fas ${icon}`}></i>
+          </div>
+          <div>
+            <p className="font-bold text-gray-800 text-sm">{title}</p>
+            <p className="text-gray-400 text-[10px] font-medium uppercase tracking-wider">{desc}</p>
+          </div>
         </div>
-        <div>
-          <p className="font-bold text-gray-800 text-sm">{title}</p>
-          <p className="text-gray-400 text-[10px] font-medium uppercase tracking-wider">{desc}</p>
-        </div>
-      </div>
+      </Radio>
     </div>
   );
 }
