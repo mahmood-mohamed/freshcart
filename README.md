@@ -12,7 +12,10 @@ A modern, fast, and fully responsive e-commerce web application built with the l
 
 ## 📸 Screenshots
 ## 🖥️ Home Page
-![Home](./src/assets/screenshots/home.png)
+![Hero Section](./src/assets/screenshots/home_page.png)
+![Featured Products](./src/assets/screenshots/feature_products.png)
+## ✨ Product Details
+![Product Details](./src/assets/screenshots/product_details.png)
 ## 🛍️ Products
 ![Products](./src/assets/screenshots/products.png)
 ## 🛒 Cart
