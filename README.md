@@ -11,10 +11,12 @@ A modern, fast, and fully responsive e-commerce web application built with the l
 ---
 
 ## 📸 Screenshots
-
-![Home](./screenshots/home.png)
-![Cart](./screenshots/cart.png)
-![Wishlist](./screenshots/wishlist.png)
+## 🖥️ Home Page
+![Home](./src/assets/screenshots/home.png)
+## 🛍️ Products
+![Products](./src/assets/screenshots/products.png)
+## 🛒 Cart
+![Cart](./src/assets/screenshots/cart.png)
 
 ---
 
