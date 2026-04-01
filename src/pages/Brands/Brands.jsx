@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LoadingScreen from "../../components/LoadingScreens/LoadingScreen";
+import { Skeleton } from "@heroui/react";
 import MainSlider from "../../components/MainSlider/MainSlider";
 import useFetch from "../../hooks/useFetch";
 
@@ -24,9 +24,26 @@ export default function Brands() {
 
     if(isLoading && page === 1) {
       return (
-        <div className="text-center">
-          <p className="text-xl mt-3 font-semibold">Loading Brands...</p>
-          <LoadingScreen />
+        <div className="container mx-auto px-4 py-12">
+          <MainSlider data={null} />
+          <div className="text-center my-6 mt-12">
+            <Skeleton className="w-48 h-8 rounded-lg mx-auto">
+              <div className="w-full h-full bg-default-300"></div>
+            </Skeleton>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-zinc-100 w-32 h-32 flex flex-col items-center justify-center border border-blue-100 rounded-lg shadow-md overflow-hidden"
+              >
+                <Skeleton className="w-full h-full rounded-none" />
+                <div className="py-2 flex justify-center w-full">
+                  <Skeleton className="h-4 w-24 rounded-md" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       );
     }
