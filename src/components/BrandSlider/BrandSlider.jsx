@@ -1,7 +1,8 @@
 import React from 'react'
 import Slider from "react-slick";
 import useFetch from "../../hooks/useFetch";
-import LoadingScreen from "../LoadingScreens/LoadingScreen";
+
+import { Skeleton } from "@heroui/react";
 
 export default function BrandSlider() {
   const { data: brands, error, isLoading } = useFetch("brands");
@@ -23,7 +24,28 @@ export default function BrandSlider() {
     ]
   };
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) {
+    return (
+      <section className="py-12 bg-white overflow-hidden">
+        <div className="flex gap-4 mx-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="w-1/6 px-4 hidden md:block">
+              <Skeleton className="h-24 w-full rounded-xl">
+                <div className="w-full h-full bg-default-300"></div>
+              </Skeleton>
+            </div>
+          ))}
+          {[...Array(2)].map((_, i) => (
+            <div key={i + 6} className="w-1/2 px-4 md:hidden">
+              <Skeleton className="h-24 w-full rounded-xl">
+                <div className="w-full h-full bg-default-300"></div>
+              </Skeleton>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
   if (error) return null;
 
   return (

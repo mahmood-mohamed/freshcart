@@ -3,10 +3,40 @@ import useFetch from "../../hooks/useFetch";
 import LoadingScreen from "../LoadingScreens/LoadingScreen";
 import { Link } from 'react-router-dom';
 
+import { Skeleton } from "@heroui/react";
+
 export default function SubCategorySection() {
   const { data: categories, error, isLoading } = useFetch("categories");
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) {
+    return (
+      <section className="">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center gap-1 mb-10">
+            <div>
+              <Skeleton className="w-48 h-6 rounded-lg mb-2">
+                <div className="w-full h-full bg-default-300"></div>
+              </Skeleton>
+              <Skeleton className="w-72 h-4 rounded-lg">
+                <div className="w-full h-full bg-default-200"></div>
+              </Skeleton>
+            </div>
+            <Skeleton className="w-20 h-5 rounded-lg">
+              <div className="w-full h-full bg-default-200"></div>
+            </Skeleton>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {[...Array(10)].map((_, i) => (
+              <Skeleton key={i} className="rounded-2xl aspect-square w-full">
+                <div className="w-full h-full bg-default-300"></div>
+              </Skeleton>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (error) return null;
 
   return (

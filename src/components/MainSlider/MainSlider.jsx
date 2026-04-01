@@ -1,5 +1,6 @@
 import React from 'react'
 import Slider from "react-slick";
+import { Skeleton } from "@heroui/react";
 
 export default function MainSlider({ data , style}) {
 
@@ -45,6 +46,34 @@ export default function MainSlider({ data , style}) {
       }
     ]
 
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex gap-4 overflow-hidden py-4">
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="w-1/8 min-w-[120px] px-2 flex-shrink-0 hidden lg:block">
+            <Skeleton className="h-32 w-full rounded-lg">
+              <div className="w-full h-full bg-default-300"></div>
+            </Skeleton>
+          </div>
+        ))}
+        {[...Array(5)].map((_, i) => (
+          <div key={i + 8} className="w-1/5 min-w-[100px] px-2 flex-shrink-0 hidden md:block lg:hidden">
+            <Skeleton className="h-32 w-full rounded-lg">
+              <div className="w-full h-full bg-default-300"></div>
+            </Skeleton>
+          </div>
+        ))}
+        {[...Array(3)].map((_, i) => (
+          <div key={i + 13} className="w-1/3 min-w-[80px] px-2 flex-shrink-0 md:hidden">
+            <Skeleton className="h-32 w-full rounded-lg">
+              <div className="w-full h-full bg-default-300"></div>
+            </Skeleton>
+          </div>
+        ))}
+      </div>
+    );
   }
   return (
     <Slider {...settings}>
