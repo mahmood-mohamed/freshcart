@@ -1,12 +1,25 @@
-import LoadingScreen from '../LoadingScreens/LoadingScreen';
+import { Skeleton } from "@heroui/react";
 
 export default function AllCategories({ data, error, isLoading, setSelectedCategory }) {
   if (isLoading) {
     return (
-      <div className="text-center">
-        <p className="text-xl mt-3 font-semibold">Loading Categories...</p>
-        <LoadingScreen />
-      </div>
+      <>
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className="bg-gray-100 rounded-lg shadow-md overflow-hidden">
+            <Skeleton className="w-full h-48">
+              <div className="w-full h-full bg-default-300"></div>
+            </Skeleton>
+            <div className="flex items-center justify-between p-2">
+              <Skeleton className="w-1/2 h-4 rounded-lg">
+                <div className="w-full h-full bg-default-200"></div>
+              </Skeleton>
+              <Skeleton className="w-16 h-4 rounded-lg">
+                <div className="w-full h-full bg-default-200"></div>
+              </Skeleton>
+            </div>
+          </div>
+        ))}
+      </>
     );
   }
 
