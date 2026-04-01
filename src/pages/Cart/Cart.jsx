@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Button, RadioGroup, Radio } from "@heroui/react";
 import CartProduct from "../../components/CartProduct/CartProduct";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
-import LoadingScreen from "../../components/LoadingScreens/LoadingScreen";
 import { CartItemsContext } from "../../contexts/cartContext";
 import shoppingCart from "../../assets/images/shopping-cart.png";
 import emptyCart from "../../assets/images/empty-cart.png";
 import api from "../../services/api/axiosInstance";
+import CartSkeleton from "../../components/CartSkeleton/CartSkeleton";
 
 export default function Cart() {
   const [cartData, setCartData] = useState(null);
@@ -96,7 +96,7 @@ export default function Cart() {
     }
   }, [setNumOfCartItems]);
 
-  if (isLoadingScreen) return <LoadingScreen />;
+  if (isLoadingScreen) return <CartSkeleton />;
   if (error) return (
     <div className="container py-20 text-center">
       <div className="max-w-md mx-auto p-8 bg-red-50 rounded-3xl border border-red-100">
