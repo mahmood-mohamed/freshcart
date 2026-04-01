@@ -7,6 +7,7 @@ export const wishlistContext = createContext();
 export default function WishlistProvider({ children }) {
   const [wishlist, setWishlist] = useState([]);
   const [numOfWishlistItems, setNumOfWishlistItems] = useState(0);
+  const [isWishlistLoading, setIsWishlistLoading] = useState(true);
 
   useEffect(() => {
     getWishlistItems();
@@ -15,8 +16,12 @@ export default function WishlistProvider({ children }) {
   // 🔥 جلب قائمة الرغبات من الواجهة الخلفية
   async function getWishlistItems() {
     try {
+      setIsWishlistLoading(true);
       const token = localStorage.getItem("token");
-      if (!token) return;
+      if (!token) {
+        setIsWishlistLoading(false);
+        return;
+      }
 
       const response = await axios.get("https://ecommerce.routemisr.com/api/v1/wishlist", {
         headers: { token },
@@ -26,6 +31,8 @@ export default function WishlistProvider({ children }) {
       setNumOfWishlistItems(response.data.count);
     } catch (err) {
       console.error("Error fetching wishlist:", err);
+    } finally {
+      setIsWishlistLoading(false);
     }
   }
 
@@ -96,7 +103,7 @@ export default function WishlistProvider({ children }) {
   };
 
   return (
-    <wishlistContext.Provider value={{ wishlist, numOfWishlistItems, addWishlistItems, removeWishlistItem }}>
+    <wishlistContext.Provider value={{ wishlist, numOfWishlistItems, addWishlistItems, removeWishlistItem, isWishlistLoading }}>
       {children}
     </wishlistContext.Provider>
   );

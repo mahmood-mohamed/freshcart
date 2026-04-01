@@ -8,9 +8,10 @@ import { CartItemsContext } from "../../contexts/cartContext";
 import LoadingScreen from "../LoadingScreens/LoadingScreen";
 import ErrorBoundary from './../ErrorBoundary/ErrorBoundary';
 import wishlistImg from "../../assets/images/wishlist-cart.png";
+import WishlistSkeleton from "../WishlistSkeleton/WishlistSkeleton";
 
 export default function WishlistTable() {
-  const { wishlist, setWishlist, removeWishlistItem } = useContext(wishlistContext);
+  const { wishlist, removeWishlistItem, isWishlistLoading } = useContext(wishlistContext);
   const { setNumOfCartItems } = useContext(CartItemsContext);
   const [loading, setLoading] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
@@ -58,6 +59,10 @@ export default function WishlistTable() {
 
   if (loading) {
     return <LoadingScreen />;  
+  }
+
+  if (isWishlistLoading) {
+    return <WishlistSkeleton />;
   }
 
   return (
