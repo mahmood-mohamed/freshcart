@@ -2,7 +2,7 @@ import { Button, Form, Input } from "@heroui/react";
 import { useContext, useState } from "react";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { authContext } from "../../contexts/authContext";
 import api from "../../services/api/axiosInstance";
 
@@ -11,6 +11,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const {setIsLoggedIn} = useContext(authContext);
 
   const initialValues = {
@@ -25,7 +26,7 @@ export default function Login() {
       if(data.message == 'success'){  // User isLoggedIn
         setIsLoggedIn(true);
         localStorage.setItem('token',data.token); // Save Token
-        navigate('/');
+        navigate(location.state?.from || '/');
       }
     }).catch((err) => {
       setErrMsg(err.response.data.message)

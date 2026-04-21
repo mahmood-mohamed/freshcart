@@ -36,16 +36,16 @@ function App() {
 
   const router = createHashRouter([
     {path: '', element: <MainLayout/>, children:[
-      {index: true, element: <ProtectedRoute> <Home/> </ProtectedRoute>},
+      {index: true, element: <Home/> },
       {path: '/login', element: <AuthProtectedRoute> <Login/> </AuthProtectedRoute>},
       {path: '/register', element: <AuthProtectedRoute> <Register/> </AuthProtectedRoute>},
       {path: '/forgetPassword', element: <AuthProtectedRoute> <ForgetPassword/> </AuthProtectedRoute>},
       {path: '/verifyResetCode', element: <AuthProtectedRoute> <VerifyResetCode/> </AuthProtectedRoute>},
       {path: '/resetPassword', element: <AuthProtectedRoute> <ResetPassword/> </AuthProtectedRoute>},
-      {path: '/productDetails/:productId', element: <ProtectedRoute> <ProductDetails/> </ProtectedRoute>},
-      {path: '/products', element: <ProtectedRoute> <Products/> </ProtectedRoute>},
-      {path: '/categories', element: <ProtectedRoute> <Categories/> </ProtectedRoute>},
-      {path: '/brands', element: <ProtectedRoute> <Brands/> </ProtectedRoute>},
+      {path: '/productDetails/:productId', element: <ProductDetails/> },
+      {path: '/products', element: <Products/> },
+      {path: '/categories', element: <Categories/> },
+      {path: '/brands', element: <Brands/> },
       {path: '/contact', element: <ContactUs/>}, 
       {path: '/about', element: <About/>}, 
       {path: '/faqs', element: <FAQs/>},  

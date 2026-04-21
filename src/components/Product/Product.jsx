@@ -1,10 +1,12 @@
 import { Button } from "@heroui/react";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { addProductToCart } from "../../services/CartServices/addProductToCart";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
 import { CartItemsContext } from "../../contexts/cartContext";
 import WishlistButton from "../WishlistButton/WishlistButton";
+import { toast } from "react-toastify";
+import { authContext } from "../../contexts/authContext";
 
 
 export default function Product({ product }) {
@@ -12,7 +14,25 @@ export default function Product({ product }) {
   const [isLoadingWishList, setIsLoadingWishList] = useState(false);
   // To Add Product to Cart
   const { setNumOfCartItems } = useContext(CartItemsContext);
+  const { isLoggedIn } = useContext(authContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      toast.info("You must login first", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
     addProductToCart(product.id, setIsLoadingCart, setNumOfCartItems);
   };
 

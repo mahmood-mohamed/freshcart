@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import LoadingScreen from './../LoadingScreens/LoadingScreen';
 import Slider from "react-slick";
 import StarRating from './../StarRating/StarRating';
@@ -10,6 +10,8 @@ import { CartItemsContext } from '../../contexts/cartContext';
 import WishlistButton from '../WishlistButton/WishlistButton';
 import api from '../../services/api/axiosInstance';
 import ReviewsSection from '../ReviewsSection/ReviewsSection';
+import { toast } from 'react-toastify';
+import { authContext } from '../../contexts/authContext';
 
 export default function ProductDetails() {
 
@@ -20,7 +22,25 @@ export default function ProductDetails() {
 
   // To Add Product to Cart
   const { setNumOfCartItems } = useContext(CartItemsContext);
+  const { isLoggedIn } = useContext(authContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      toast.info("You must login first", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
     addProductToCart(product?._id || product?.id, setAddToCartLoading, setNumOfCartItems);
   };
 

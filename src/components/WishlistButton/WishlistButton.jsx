@@ -1,10 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { wishlistContext } from "../../contexts/wishlistItemsContext";
+import { authContext } from "../../contexts/authContext";
 import { Button } from "@heroui/react";
+import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function WishlistButton({ productId }) {
   const { wishlist, addWishlistItems, removeWishlistItem } = useContext(wishlistContext);
+  const { isLoggedIn } = useContext(authContext);
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -14,6 +20,20 @@ export default function WishlistButton({ productId }) {
   }, [wishlist, productId]);
 
   const toggleWishlist = async () => {
+    if (!isLoggedIn) {
+      toast.info("You must login first", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
     setIsLoading(true);
 
     try {
