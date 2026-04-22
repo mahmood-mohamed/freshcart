@@ -72,7 +72,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-800">Fast & Free Shipping</h3>
               <p className="text-gray-500 text-sm leading-relaxed">
-                Enjoy free home delivery for all orders over $100. Reliable and on-time.
+                Enjoy free home delivery for all orders over 300 EGP. Reliable and on-time.
               </p>
             </div>
             
