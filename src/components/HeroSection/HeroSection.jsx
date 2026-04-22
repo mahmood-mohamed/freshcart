@@ -4,54 +4,81 @@ import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   return (
-    <section className="relative h-[500px] md:h-[650px] flex items-center overflow-hidden px-4 shadow-2xl">
-      {/* Background Image with Overlay */}
+    <section className="relative h-[600px] md:h-[700px] flex items-center overflow-hidden bg-gray-900">
+      {/* Background Image with Slow Zoom Effect */}
       <div 
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10000ms] ease-out hover:scale-110"
         style={{ backgroundImage: `url(${heroBg})` }}
       >
-        {/* Layered Advanced Gradient for Premium Look */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
-        <div className="absolute inset-0 bg-green-900/10 mix-blend-overlay"></div>
       </div>
 
-      {/* Content */}
-      <div className="relative mx-auto px-4 md:px-16 z-10 text-white max-w-2xl">
-        <h1 className="text-4xl md:text-6xl font-extrabold leading-tight line-height-20 letter-spacing-10 mb-6 animate-fade-in-down tracking-tight">
-          Everything You Need, <br />
-          <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-            All in One Place.
-          </span>
-        </h1>
-        <p className="text-lg md:text-xl text-gray-200 mb-10 animate-fade-in-up delay-200 font-medium leading-relaxed">
-          From fresh organic harvest to the latest electronics and premium fashion. 
-          Experience a curated world of quality delivered to your doorstep.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-5 animate-fade-in delay-500">
-          <Button 
-            as={Link}
-            to="/products"
-            size="lg" 
-            color="success" 
-            className="font-semibold px-8 py-6 text-lg shadow-lg transition-all hover:scale-105 bg-gradient-to-r from-green-600 to-emerald-600 border-none"
-          >
-            Shop Now
-          </Button>
-          <Button 
-            as={Link}
-            to="/categories"
-            size="lg" 
-            variant="bordered" 
-            className="font-semibold px-8 py-6 text-lg border-2 border-white text-white hover:bg-green-600 hover:border-green-600 transition-all backdrop-blur-sm"
-          >
-            Explore Categories
-          </Button>
+      {/* Modern Gradient Overlays for Readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-transparent md:w-3/4 lg:w-2/3 xl:w-1/2"></div>
+      {/* Extra bottom gradient for mobile readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent md:hidden"></div>
+
+      {/* Decorative Aurora Glow Effects */}
+      <div className="absolute top-1/4 left-10 w-64 h-64 bg-green-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
+      {/* Content Container */}
+      <div className="relative z-10 container px-4 sm:px-6 lg:px-8 mx-auto flex items-center">
+        <div className="max-w-2xl text-left">
+          
+          {/* Glassmorphism Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium mb-6 animate-fade-in-down shadow-lg">
+            <span className="flex h-2.5 w-2.5 rounded-full bg-green-400 animate-pulse"></span>
+            <span className="tracking-wide">100% Fresh & Organic</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 tracking-tight animate-fade-in-up">
+            Fresh Groceries, <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">
+              Delivered Fast.
+            </span>
+          </h1>
+          
+          <p className="text-lg md:text-xl text-gray-300 mb-8 font-medium leading-relaxed animate-fade-in-up delay-100 max-w-xl">
+            Skip the lines and get premium quality fresh produce, meats, and daily essentials delivered directly to your door in minutes.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-200">
+            <Button 
+              as={Link}
+              to="/products"
+              size="lg" 
+              className="bg-green-600 hover:bg-green-500 text-white font-semibold text-lg px-8 py-6 rounded-xl shadow-[0_0_20px_rgba(22,163,74,0.4)] transition-all hover:scale-105 border-none w-full sm:w-auto"
+            >
+              Shop Now <i className="fas fa-arrow-right ml-2 text-sm"></i>
+            </Button>
+            <Button 
+              as={Link}
+              to="/categories"
+              size="lg" 
+              variant="bordered" 
+              className="border-white/30 text-white hover:bg-white hover:text-gray-900 font-semibold text-lg px-8 py-6 rounded-xl transition-all backdrop-blur-sm w-full sm:w-auto"
+            >
+              Explore Categories
+            </Button>
+          </div>
+
+          {/* Quick Stats - Adds Trust and Premium Feel */}
+          <div className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-white/10 animate-fade-in-up delay-300">
+            <div>
+              <p className="text-2xl sm:text-3xl font-bold text-white mb-1">15k+</p>
+              <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-semibold">Products</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-bold text-white mb-1">24/7</p>
+              <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-semibold">Support</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-bold text-white mb-1">99%</p>
+              <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-semibold">Satisfied</p>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Subtle Bottom Glow */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
     </section>
   );
 }
