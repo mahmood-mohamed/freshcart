@@ -61,11 +61,12 @@ export default function NavbarComponent() {
   return (
     <div className="">
     <Navbar
-      maxWidth="xl"
+      maxWidth="full"
+      height="auto"
+      className="py-4"
       classNames={{
-        wrapper: "container mx-auto px-0",
+        wrapper: "container !py-0",
       }}
-      shouldHideOnScroll
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
