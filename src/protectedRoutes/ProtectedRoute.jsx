@@ -10,7 +10,8 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     if (!isLoggedIn) {
       toast.info("You must login first", {
-        position: "top-right",
+        toastId: "auth-toast",
+        position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
