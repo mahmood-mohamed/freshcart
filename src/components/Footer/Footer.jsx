@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 border-b border-gray-200 mb-6">
+        <div className="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-gray-200 mb-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center shrink-0 shadow-sm">
               <i className="fas fa-truck-fast"></i>
@@ -48,7 +48,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-wrap justify-between gap-8 pb-2 border-b border-gray-200 mb-4">
+        <div className="flex flex-wrap justify-between gap-8 pb-4 border-b border-gray-200 mb-4">
           <div className="space-y-3 max-w-xs">
             <Logo />
             <p className="text-gray-500 text-xs leading-relaxed">
@@ -58,8 +58,8 @@ export default function Footer() {
 
           {/* Quick Links */}
           {isLoggedIn && (<div>
-            <h3 className="font-bold text-gray-900 mb-3 uppercase text-xs tracking-wider">Shop & Explore</h3>
-            <ul className="space-y-2">
+            <h3 className="font-bold text-gray-900 mb-2 uppercase text-xs tracking-wider">For Shoppers</h3>
+            <ul className="space-y-1">
               <li><Link to="/" className="text-gray-500 hover:text-green-600 hover:translate-x-1 inline-block text-sm transition-all duration-300">Home</Link></li>
               <li><Link to="/cart" className="text-gray-500 hover:text-green-600 hover:translate-x-1 inline-block text-sm transition-all duration-300">My Cart</Link></li>
               <li><Link to="/wishlist" className="text-gray-500 hover:text-green-600 hover:translate-x-1 inline-block text-sm transition-all duration-300">Wishlist</Link></li>
@@ -69,8 +69,8 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h3 className="font-bold text-gray-900 mb-3 uppercase text-xs tracking-wider">Help Center</h3>
-            <ul className="space-y-2">
+            <h3 className="font-bold text-gray-900 mb-2 uppercase text-xs tracking-wider">For Customers</h3>
+            <ul className="space-y-1">
               <li><Link to="/contact" className="text-gray-500 hover:text-green-600 hover:translate-x-1 inline-block text-sm transition-all duration-300">Contact Us</Link></li>
               <li><Link to="/about" className="text-gray-500 hover:text-green-600 hover:translate-x-1 inline-block text-sm transition-all duration-300">About FreshCart</Link></li>
               <li><Link to="/faqs" className="text-gray-500 hover:text-green-600 hover:translate-x-1 inline-block text-sm transition-all duration-300">FAQs</Link></li>
