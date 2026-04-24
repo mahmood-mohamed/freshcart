@@ -33,7 +33,6 @@ export default function Cart() {
       setCartId(data.cartId);
       setError(null);
     } catch (error) {
-      console.error("Error fetching cart data:", error.response.data.message);
       setError("😣 Oops! Failed to fetch cart data. Please try again later.");
     } finally {
       setIsLoadingScreen(false);
@@ -71,7 +70,6 @@ export default function Cart() {
         setNumOfCartItems(data.numOfCartItems);
         setCartData(data.data);
       } catch (error) {
-        console.error("Error removing item:", error);
         setError("😣 Failed to remove item. Please try again.");
       }
     },
@@ -88,8 +86,8 @@ export default function Cart() {
       setNumOfCartItems(0);
       setCartData(null);
       setCartId(null);
+      toast.success("Cart cleared successfully");
     } catch (error) {
-      console.error("Error clearing cart:", error);
       setError("😣 Failed to clear cart. Please try again.");
     } finally {
       setClearCartLoading(false);

@@ -18,11 +18,10 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
   };
 
   const handleDecrement = () => {
-    if (productCount > 1) {
-      const newCount = Number(productCount) - 1;
-      setProductCount(newCount);
-      updateProductCount(product.product._id, newCount);
-    }
+    if (productCount <= 1) return;
+    const newCount = Number(productCount) - 1;
+    setProductCount(newCount);
+    updateProductCount(product.product._id, newCount);
   };
 
   const handleBlur = (e) => {
