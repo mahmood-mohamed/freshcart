@@ -1,7 +1,6 @@
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
 
-// ✅ Pass `setNumOfCartItems` as an argument instead of using `useContext`
 export async function addProductToCart(productId, setIsLoading, setNumOfCartItems) {
   let isMounted = true; // Prevents state updates if the component unmounts
 
@@ -21,7 +20,6 @@ export async function addProductToCart(productId, setIsLoading, setNumOfCartItem
     if (isMounted) {
       setNumOfCartItems(data.numOfCartItems);
     }
-
     if (data.status === "success") {
       toast.success(`${data.message} 🛒`, {
         position: "bottom-right",
@@ -35,21 +33,10 @@ export async function addProductToCart(productId, setIsLoading, setNumOfCartItem
       });
     }
   } catch (error) {
-    console.error("Error adding product to cart:", error);
-
     const errorMessage =
       error.response?.data?.message || "Failed to add product to cart. Please try again.";
 
-    toast.error(`${errorMessage}`, {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "light",
-      transition: Bounce,
-    });
+    toast.error(`${errorMessage}`);
   } finally {
     if (isMounted) {
       setIsLoading(false);
@@ -57,6 +44,6 @@ export async function addProductToCart(productId, setIsLoading, setNumOfCartItem
   }
 
   return () => {
-    isMounted = false; // Cleanup function
+    isMounted = false;
   };
 }
