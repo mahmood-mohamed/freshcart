@@ -13,6 +13,10 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
 
   const handleIncrement = () => {
     const newCount = Number(productCount) + 1;
+    if(newCount > 50){
+      toast.error("You cannot add more than 50 items of this product 😣")
+      return;
+    }
     setProductCount(newCount);
     updateProductCount(product.product._id, newCount);
   };
@@ -85,8 +89,9 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
             disabled={isLoadingRemove}
             type="number"
             min={1}
+            max={50}
             className="w-12 bg-transparent text-center font-bold text-gray-800 text-sm outline-none"
-            value={productCount}
+            value={productCount > 50 ? 50 : productCount}
             onChange={(e) => setProductCount(e.target.value)}
             onBlur={handleBlur}
           />
@@ -95,6 +100,7 @@ export default function CartProduct({ product, removeSpecificCartItem, updatePro
             isIconOnly
             size="sm"
             variant="light"
+            isDisabled={productCount >= 50}
             onPress={handleIncrement}
             className="w-8 h-8 rounded-xl text-gray-600 hover:bg-white"
           >

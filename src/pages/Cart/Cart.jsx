@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, RadioGroup, Radio } from "@heroui/react";
 import CartProduct from "../../components/CartProduct/CartProduct";
 import { formatCurrency } from "../../helpers/formatCurrencyHelper";
@@ -8,6 +8,7 @@ import shoppingCart from "../../assets/images/shopping-cart.png";
 import emptyCart from "../../assets/images/empty-cart.png";
 import api from "../../services/api/axiosInstance";
 import CartSkeleton from "../../components/CartSkeleton/CartSkeleton";
+import { toast } from "react-toastify";
 
 export default function Cart() {
   const [cartData, setCartData] = useState(null);
@@ -55,9 +56,11 @@ export default function Cart() {
             setCartData(data.data);
             setNumOfCartItems(data.numOfCartItems);
           })
-          .catch((err) => console.log('Error updating product count:', err));
+          .catch(() => {
+            toast.error(" Error updating product count. Please try again 😣")
+          })
       }, 500)
-    );
+    )
   }
 
   // Remove specific cart item
@@ -69,8 +72,8 @@ export default function Cart() {
         });
         setNumOfCartItems(data.numOfCartItems);
         setCartData(data.data);
-      } catch (error) {
-        setError("😣 Failed to remove item. Please try again.");
+      } catch {
+        toast.error(`Failed to remove item. Please try again 😣`);
       }
     },
     [setNumOfCartItems]
@@ -86,7 +89,7 @@ export default function Cart() {
       setNumOfCartItems(0);
       setCartData(null);
       setCartId(null);
-      toast.success("Cart cleared successfully");
+      toast.success("Cart cleared successfully 🛒");
     } catch (error) {
       setError("😣 Failed to clear cart. Please try again.");
     } finally {
@@ -161,7 +164,9 @@ export default function Cart() {
   );
 }
 
-function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPayment }) {
+function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPayment }) {  
+  const navigate = useNavigate();
+
   return (
     <aside className="sticky top-24 bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 space-y-8">
       <h2 className="text-xl font-bold text-gray-800 tracking-tight">Order Summary</h2>
@@ -212,10 +217,9 @@ function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPay
 
       {/* 🚀 Checkout Actions */}
       <Button 
-        as={Link}
-        to={selectedPayment === "online" ? `/onlinePayment/${cartId}` : `/cashOnPayment/${cartId}`}
         color={selectedPayment === 'online' ? 'primary' : 'success'}
-        size="lg"
+        onPress={()=>{navigate(selectedPayment === "online" ? `/onlinePayment/${cartId}` : `/cashOnPayment/${cartId}`)}}
+        size="md"
         className="w-full h-14 rounded-[1.25rem] font-bold text-md shadow-xl shadow-blue-100"
         startContent={<i className={`fas ${selectedPayment === 'online' ? 'fa-lock' : 'fa-check-circle'} mr-2`}></i>}
       >
@@ -223,8 +227,8 @@ function OrderSummary({ subtotal, total, cartId, selectedPayment, setSelectedPay
       </Button>
 
       <div className="flex items-center justify-center gap-4 text-gray-300 text-xl pt-2">
+         <i className="fab fa-cc-stripe"></i>
          <i className="fab fa-cc-visa"></i>
-         <i className="fab fa-cc-mastercard"></i>
          <i className="fab fa-cc-paypal"></i>
          <i className="fab fa-cc-apple-pay"></i>
       </div>
@@ -256,27 +260,28 @@ function PaymentCard({ value, title, desc, icon, color, isSelected }) {
 }
 
 function EmptyCartMessage() {
+  const navigate = useNavigate();
+
   return (
     <div className="container py-16 mt-10 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      <div className="max-w-md mx-auto space-y-8">
+      <div className="max-w-md mx-auto space-y-5">
         <div className="relative inline-block">
           <div className="absolute inset-0 bg-green-200 blur-3xl opacity-30 rounded-full"></div>
           <img src={emptyCart} alt="Empty cart" className="relative w-64 mx-auto animate-bounce duration-[3000ms]" />
         </div>
-        <div className="space-y-4">
+        <div className="space-y-3">
           <h2 className="text-xl font-black text-gray-800 tracking-tight">Your Cart is Empty</h2>
-          <p className="text-gray-400 text-lg leading-relaxed">
-            Looks like you haven't added anything to your cart yet. Explore our fresh products and find something you love!
+          <p className="text-gray-400 text-md leading-relaxed">
+            Looks like you haven't added any products to your cart yet. Explore our fresh products and find something you love!
           </p>
         </div>
         <Button 
-          as={Link}
-          to="/"
-          size="lg"
+          onPress={() => navigate('/products')}
+          size="md"
           variant="solid" 
           color="success"
-          className="px-12 rounded-2xl font-bold shadow-xl shadow-green-100"
-          startContent={<i className="fas fa-shopping-basket"></i>}
+          className="rounded-full font-bold shadow-xl shadow-green-100 hover:shadow-green-200 hover:scale-105 transition-all duration-300"
+          startContent={<i className="fas fa-cart-plus"></i>}
         >
           Start Shopping
         </Button>
