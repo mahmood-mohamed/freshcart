@@ -6,7 +6,7 @@ function BrandCard({ brand }) {
     return (
         <div className="group relative bg-white rounded-2xl shadow-sm border border-emerald-100
             hover:shadow-[0_6px_24px_rgba(16,185,129,0.22)] hover:-translate-y-1
-            transition-all duration-300 flex flex-col overflow-hidden cursor-pointer">
+            transition-all duration-300 flex flex-col overflow-hidden cursor-default">
 
             {/* ── Arch header ── */}
             <div className="relative h-20 bg-gradient-to-br from-emerald-400 to-green-600 overflow-visible">
@@ -36,7 +36,7 @@ function BrandCard({ brand }) {
 
             {/* ── Name ── */}
             <div className="pt-12 pb-4 px-2 text-center">
-                <h3 className="text-gray-700 text-xs font-bold truncate w-full
+                <h3 className="text-gray-700 text-sm font-semibold truncate w-full
                     group-hover:text-emerald-600 transition-colors duration-200">
                     {brand.name}
                 </h3>
