@@ -1,28 +1,43 @@
 import { useEffect, useState } from "react";
-import { Skeleton, Button, Input } from "@heroui/react";
+import { Skeleton, Input } from "@heroui/react";
 import useFetch from "../../hooks/useFetch";
 
-/* ─── Brand Card ─────────────────────────────────────────── */
 function BrandCard({ brand }) {
     return (
-        <div className="group relative bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col items-center">
-            {/* Image area */}
-            <div className="w-full aspect-square overflow-hidden bg-gray-50 flex items-center justify-center p-4">
-                <img
-                    src={brand.image}
-                    alt={brand.name}
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-emerald-600/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6 pointer-events-none">
-                    <span className="text-white font-bold text-sm tracking-wide px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full">
-                        {brand.name}
-                    </span>
+        <div className="group relative bg-white rounded-2xl shadow-sm border border-emerald-100
+            hover:shadow-[0_6px_24px_rgba(16,185,129,0.22)] hover:-translate-y-1
+            transition-all duration-300 flex flex-col overflow-hidden cursor-pointer">
+
+            {/* ── Arch header ── */}
+            <div className="relative h-20 bg-gradient-to-br from-emerald-400 to-green-600 overflow-visible">
+                {/* Curved bottom edge */}
+                <div className="absolute -bottom-4 left-0 w-full h-8 bg-white rounded-t-[50%] border-t border-emerald-100" />
+
+                {/* Leaf accent */}
+                <svg className="absolute top-1.5 right-1.5 w-5 h-5 text-white/30 group-hover:text-white/60 group-hover:rotate-180 transition-all ease-out duration-5000"
+                    viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17 8C8 10 5.9 16.17 3.82 21L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-5 8z"/>
+                </svg>
+
+                {/* Logo — large, prominent, floats over arch */}
+                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2
+                    w-20 h-20 rounded-2xl bg-white shadow-lg border-2 border-emerald-100
+                    flex items-center justify-center p-2.5
+                    group-hover:border-emerald-400
+                    group-hover:shadow-[0_4px_20px_rgba(16,185,129,0.35)]
+                    group-hover:scale-110 transition-all duration-300 z-10">
+                    <img
+                        src={brand.image}
+                        alt={brand.name}
+                        className="w-full h-full object-contain"
+                    />
                 </div>
             </div>
-            {/* Name strip */}
-            <div className="w-full py-3 px-3 text-center border-t border-gray-50">
-                <h3 className="text-gray-700 text-sm font-semibold truncate group-hover:text-green-600 transition-colors duration-200">
+
+            {/* ── Name ── */}
+            <div className="pt-12 pb-4 px-2 text-center">
+                <h3 className="text-gray-700 text-xs font-bold truncate w-full
+                    group-hover:text-emerald-600 transition-colors duration-200">
                     {brand.name}
                 </h3>
             </div>
@@ -30,44 +45,45 @@ function BrandCard({ brand }) {
     );
 }
 
-/* ─── Brand Card Skeleton ────────────────────────────────── */
 function BrandCardSkeleton() {
     return (
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm flex flex-col">
-            <Skeleton className="aspect-square w-full rounded-none" />
-            <div className="py-3 px-3 flex justify-center border-t border-gray-50">
-                <Skeleton className="h-4 w-20 rounded-md" />
+        <div className="rounded-2xl overflow-hidden bg-white border border-emerald-100 shadow-sm flex flex-col">
+            <div className="h-20 bg-gradient-to-br from-emerald-100 to-green-100 animate-pulse relative">
+                <div className="absolute -bottom-4 left-0 w-full h-8 bg-white rounded-t-[50%]" />
+                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-20 h-20 rounded-2xl bg-emerald-100 animate-pulse" />
+            </div>
+            <div className="pt-12 pb-4 px-2 flex justify-center">
+                <div className="h-3 w-16 rounded-full bg-gray-200 animate-pulse" />
             </div>
         </div>
     );
 }
 
-/* ─── Page ───────────────────────────────────────────────── */
 export default function Brands() {
-    const [page, setPage] = useState(1);
     const [brands, setBrands] = useState([]);
-    const [search, setSearch] = useState("");
+    const [search, setSearch]  = useState("");
 
-    const { data: newBrands, error, isLoading, isFetching } = useFetch("brands", page);
+    // Fetch both pages in parallel
+    const p1 = useFetch("brands", 1);
+    const p2 = useFetch("brands", 2);
 
+    // Merge page 1 + page 2 as soon as either arrives
     useEffect(() => {
-        if (newBrands) {
-            setBrands((prev) => {
-                const merged = [...prev, ...newBrands];
-                return merged.filter(
-                    (b, i, self) => i === self.findIndex((x) => x._id === b._id)
-                );
-            });
-        }
-    }, [newBrands]);
+        const all = [...(p1.data ?? []), ...(p2.data ?? [])];
+        if (all.length === 0) return;
+        setBrands(
+            all.filter((b, i, self) => i === self.findIndex((x) => x._id === b._id))
+        );
+    }, [p1.data, p2.data]);
 
-    /* Filtered list */
-    const filtered = brands.filter((b) =>
+    const isLoading = p1.isLoading;
+    const error     = p1.error;
+    const filtered  = brands.filter((b) =>
         b.name.toLowerCase().includes(search.toLowerCase())
     );
 
     /* ── Loading skeleton (initial) ── */
-    if (isLoading && page === 1) {
+    if (isLoading) {
         return (
             <div className="overflow-x-hidden">
                 {/* Hero skeleton */}
@@ -80,7 +96,7 @@ export default function Brands() {
                 </div>
                 {/* Grid skeleton */}
                 <div className="container py-12">
-                    <Skeleton className="h-11 w-full max-w-sm rounded-xl mb-8 mx-auto" />
+                    <Skeleton className="h-11 w-full max-w-md rounded-xl mt-15 mb-10 mx-auto" />
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
                         {[...Array(18)].map((_, i) => <BrandCardSkeleton key={i} />)}
                     </div>
@@ -128,7 +144,7 @@ export default function Brands() {
                         {[
                             { icon: 'fas fa-certificate', text: `${brands.length}+ Brands` },
                             { icon: 'fas fa-shield-alt', text: 'Verified Sellers' },
-                            { icon: 'fas fa-truck', text: 'Fast Delivery' },
+                            { icon: 'fas fa-truck',       text: 'Fast Delivery' },
                         ].map((s, i) => (
                             <div key={i} className="flex items-center gap-2 text-white/80 text-sm font-medium">
                                 <i className={`${s.icon} text-green-200`} />
@@ -140,7 +156,7 @@ export default function Brands() {
             </section>
 
             {/* ── Content ── */}
-            <section className="bg-gray-50 min-h-screen py-12">
+            <section className="bg-gray-50 min-h-screen py-6" aria-label="All Brands">
                 <div className="container">
 
                     {/* Search bar */}
@@ -150,7 +166,7 @@ export default function Brands() {
                             placeholder="Search brands…"
                             value={search}
                             onValueChange={setSearch}
-                            startContent={<i className="fas fa-search text-gray-400 text-sm" />}
+                            startContent={<i className="fas fa-search text-gray-400 text-sm animate-pop-in" />}
                             classNames={{
                                 base: "shadow-sm",
                                 inputWrapper: "bg-white border border-gray-200 rounded-xl h-11 hover:border-green-400 focus-within:border-green-500 transition-colors",
@@ -162,7 +178,9 @@ export default function Brands() {
 
                     {/* Results count */}
                     <p className="text-sm text-gray-400 mb-6 text-center">
-                        Showing <span className="font-semibold text-gray-600">{filtered.length}</span> brands
+                        Showing{" "}
+                        <span className="font-semibold text-gray-600">{filtered.length}</span>{" "}
+                        brands
                         {search && <> matching <span className="font-semibold text-green-600">"{search}"</span></>}
                     </p>
 
@@ -177,31 +195,12 @@ export default function Brands() {
                         </div>
                     )}
 
-                    {/* Brand Grid */}
+                    {/* Brand Grid — stable, no conditional children */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
                         {filtered.map((brand) => (
                             <BrandCard key={brand._id} brand={brand} />
                         ))}
-                        {/* Inline skeleton tiles while loading more */}
-                        {isFetching && page > 1 &&
-                            [...Array(6)].map((_, i) => <BrandCardSkeleton key={`sk-${i}`} />)
-                        }
                     </div>
-
-                    {/* Load More */}
-                    {page === 1 && !search && (
-                        <div className="flex justify-center mt-12">
-                            <Button
-                                onPress={() => setPage(2)}
-                                isLoading={isFetching}
-                                size="lg"
-                                className="bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-10 shadow-lg shadow-green-200 hover:shadow-xl hover:scale-105 transition-all duration-300"
-                                startContent={!isFetching && <i className="fas fa-chevron-down" />}
-                            >
-                                {isFetching ? "Loading…" : "Load More Brands"}
-                            </Button>
-                        </div>
-                    )}
                 </div>
             </section>
         </div>
